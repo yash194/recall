@@ -1,0 +1,28 @@
+{
+  "name": "recall",
+  "version": "0.1.0",
+  "description": "Typed-edge memory with bounded hallucination — for Claude Desktop, Cursor, Cline, Continue, Zed, Windsurf",
+  "author": "Yash Aggarwal",
+  "license": "Apache-2.0",
+  "homepage_url": "https://github.com/yash194/recall",
+  "type": "stdio",
+  "command": "uvx",
+  "args": ["--from", "recall", "recall-mcp"],
+  "tools": [
+    "add_memory",
+    "search_memory",
+    "bounded_answer",
+    "forget",
+    "audit",
+    "graph_health",
+    "consolidate",
+    "stats"
+  ],
+  "config": {
+    "RECALL_DB_DIR": {
+      "type": "string",
+      "default": "~/.recall",
+      "description": "Directory where Recall stores per-tenant SQLite databases"
+    }
+  }
+}

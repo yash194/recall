@@ -1,0 +1,42 @@
+{
+  "name": "recall-mcp",
+  "version": "0.1.0",
+  "description": "Recall MCP server — typed-edge memory for AI agents (Claude Code / Codex / Cursor / Windsurf). Wrapper that runs the Python MCP server via uvx.",
+  "keywords": [
+    "mcp",
+    "ai",
+    "memory",
+    "llm",
+    "claude",
+    "claude-code",
+    "codex",
+    "cursor",
+    "windsurf",
+    "agents"
+  ],
+  "homepage": "https://github.com/yash194/recall",
+  "bugs": "https://github.com/yash194/recall/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yash194/recall.git",
+    "directory": "npm"
+  },
+  "license": "Apache-2.0",
+  "author": "Yash Aggarwal",
+  "type": "module",
+  "bin": {
+    "recall-mcp": "bin/recall-mcp.js"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "preferGlobal": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}

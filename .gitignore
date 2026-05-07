@@ -1,0 +1,54 @@
+# Recall ignores
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+
+# Recall data files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+recall.db
+recall_data/
+benchmarks/**/data/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+
+# npm wrapper artifacts
+npm/node_modules/
+npm/*.tgz
+
+# Python build artifacts
+*.tar.gz
+*.whl
+
+# Local benchmark caches
+benchmarks/longmemeval/results/.cache/
+
+# Secrets (defensive)
+.env.*
+*.pem
+*.key
+.claude/settings.local.json

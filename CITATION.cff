@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+title: "Recall: A Typed-Edge Memory Substrate for AI Agents"
+message: "If you use this software in research, please cite the project as below."
+type: software
+authors:
+  - family-names: "Aggarwal"
+    given-names: "Yash"
+date-released: 2026-05-07
+url: "https://github.com/yash194/recall"
+repository-code: "https://github.com/yash194/recall"
+license: Apache-2.0
+keywords:
+  - "AI agents"
+  - "memory"
+  - "RAG"
+  - "knowledge graph"
+  - "typed-edge graph"
+  - "PAC-Bayes"
+  - "sheaf cohomology"
+  - "hallucination bound"
+  - "open-source"
+abstract: >
+  Recall is a typed-edge graph memory substrate for AI agents. Memories are
+  stored as nodes connected by directional, typed, signed-weighted edges
+  (supports / contradicts / corrects / agrees / pivots / temporal-next /
+  superseded). Retrieval is graph-aware and auto-routes between symmetric
+  cosine, path-mode Γ-walk, and reciprocal-rank fusion based on seed-node
+  dispersion. Generation is bounded by structural support against the
+  retrieved subgraph, with a Conformal Risk Control hallucination bound
+  reported per query. The sleep-time consolidator runs Bayesian Model
+  Reduction edge pruning, mean-field refinement, and motif extraction;
+  cycle-level inconsistency is detected via the cellular sheaf Laplacian.
+  Recall composes published results from Hauberg, Igel, Selvan, Hyvärinen,
+  Hajiaghayi, Ollivier, and the HippoRAG / sheaf-RAG / Conformal-RAG lines
+  into one coherent Bayesian framework. The library is Apache-2.0 licensed
+  and ships as a Python package, an MCP server, and a personal CLI.
+preferred-citation:
+  type: software
+  title: "Recall: A Typed-Edge Memory Substrate for AI Agents"
+  authors:
+    - family-names: "Aggarwal"
+      given-names: "Yash"
+  year: 2026
+  url: "https://github.com/yash194/recall"

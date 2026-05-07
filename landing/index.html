@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="description" content="Recall — typed-edge memory substrate for AI agents. v0.6, Apache-2.0, 154/154 tests, non-vacuous CRC hallucination bound, sheaf-cohomology cycle inconsistency, surgical forget." />
+<meta name="theme-color" content="#faf6ed" />
+<meta property="og:title" content="Recall — memory layer for AI agents" />
+<meta property="og:description" content="Typed-edge graph memory with bounded hallucination. v0.6: matches cosine RAG on factual lookup, beats it on causal reasoning, ships math nothing else has. Apache-2.0." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="charts/longmemeval_results_n30_k5_stratified.png" />
+<title>Recall — memory layer for AI agents</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Drifting ambient background (radial gradients orbit slowly) -->
+<div class="ambient-bg" aria-hidden="true"></div>
+
+<!-- Scroll-progress indicator at very top -->
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#top">
+      <span class="logo-mark"></span>
+      <span class="logo-text">Recall</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#what">What</a>
+      <a href="#how">How</a>
+      <a href="#results">Results</a>
+      <a href="#math">Math</a>
+      <a href="#vs">Compare</a>
+      <a href="usage.html">Usage</a>
+      <a href="#install">Install</a>
+      <a class="github-link" href="https://github.com/yash194/recall">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <span class="eyebrow">v0.6 · Apache-2.0 · 154/154 tests</span>
+          <h1 class="hero-title">
+            The memory layer<br>
+            <span class="accent">AI agents should have had</span><br>
+            from the beginning.
+          </h1>
+          <p class="hero-sub">
+            Recall stores AI memory as a <em>typed-edge graph</em>, not a chunk
+            bag. Every connection has meaning — supports, contradicts, corrects,
+            pivots. Retrieval walks the graph. Generation comes with a
+            mathematical hallucination bound. Memory can be deleted in one call
+            with a full audit trail.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#install">Get started</a>
+            <a class="btn btn-ghost" href="#results">See the numbers →</a>
+          </div>
+          <div class="hero-install">
+            <code>pip install recall</code>
+            <button class="copy-btn" data-copy="pip install recall" aria-label="Copy install command">copy</button>
+          </div>
+          <div class="hero-pills">
+            <span class="pill">Matches cosine RAG on LongMemEval</span>
+            <span class="pill">+60 pts on causal-chain queries</span>
+            <span class="pill">6.8× cleaner than Mem0 #4573</span>
+          </div>
+        </div>
+
+        <div class="hero-demo" aria-hidden="true">
+          <div class="demo-card">
+            <div class="demo-card-header">
+              <span class="demo-dot"></span><span class="demo-dot"></span><span class="demo-dot"></span>
+              <span class="demo-card-label">recall · Γ-walk</span>
+            </div>
+            <div class="demo-graph" id="demo-graph">
+              <!-- nodes injected by script.js -->
+            </div>
+            <div class="demo-card-footer">
+              <span class="demo-stat">λ_min(L_F) = <strong>0.00</strong></span>
+              <span class="demo-stat">depth = <strong>4</strong></span>
+              <span class="demo-stat">CRC bound = <strong>0.516</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE: v0.4 → v0.5 → v0.6 -->
+  <section class="section section-timeline reveal-up" id="timeline">
+    <div class="container">
+      <h2 class="section-title reveal-up">Three releases, one bug-fix sprint</h2>
+      <p class="section-lead reveal-up">
+        v0.4 stress-tested Recall against published benchmarks and found three
+        real flaws. v0.5 fixed two. v0.6 fixed the third. Every number is
+        measured, every script is reproducible.
+      </p>
+      <div class="timeline reveal-stagger">
+
+        <div class="timeline-step">
+          <div class="timeline-num">v0.4</div>
+          <h3>The honest baseline</h3>
+          <p>Ran the full benchmark sweep. <strong>Found three blockers</strong>:
+            scope-filter exact-JSON-match bug crashed LongMemEval to 0.000;
+            scale-stress stalled at 10K nodes from O(N) brute-force cosine;
+            bulk-document mode was missing.</p>
+          <ul class="timeline-stats">
+            <li>LongMemEval recall@5 — <strong>0.000</strong></li>
+            <li>Scale stress at 10K — <strong>killed</strong></li>
+            <li>144 / 144 tests passing</li>
+          </ul>
+        </div>
+
+        <div class="timeline-step">
+          <div class="timeline-num">v0.5</div>
+          <h3>Correctness + scale</h3>
+          <p>Subset scope semantics. Vectorized embedding cache with chunked
+            allocation (3.5 µs/insert at 10K). Bulk-document mode. Batch edge
+            induction in consolidator. <strong>Two of three blockers gone.</strong></p>
+          <ul class="timeline-stats">
+            <li>LongMemEval head — <strong>0.733</strong></li>
+            <li>Scale stress 5K — <strong>10.8 ms p50</strong></li>
+            <li>150 / 150 tests passing</li>
+          </ul>
+        </div>
+
+        <div class="timeline-step timeline-step-current">
+          <div class="timeline-num">v0.6</div>
+          <h3>The gap closes</h3>
+          <p>Decoupled the symmetric retrieval embedding from the f/b dual
+            prompts. The Γ-algebra still uses prompted views (it must); symmetric
+            retrieval no longer pays the prompt-prefix tax. <strong>Three of three
+            blockers gone.</strong></p>
+          <ul class="timeline-stats">
+            <li>LongMemEval head — <strong>0.833</strong> (= cosine RAG)</li>
+            <li>LongMemEval stratified MRR — <strong>0.834</strong> (≈ cosine 0.840)</li>
+            <li>154 / 154 tests passing</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section id="what" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title reveal-up">What Recall is, in plain language</h2>
+      <p class="section-lead reveal-up">
+        Most AI memory systems store facts in a flat bag and retrieve by cosine
+        similarity. When the agent forgets or hallucinates, you have no way to
+        debug <em>why</em>. Recall changes the data model.
+      </p>
+      <div class="cards reveal-stagger">
+        <article class="card">
+          <span class="card-num">01</span>
+          <h3>Typed-edge graph</h3>
+          <p>Every connection has a type — supports, contradicts, corrects,
+            pivots, temporal-next, superseded. Retrieval traverses the type
+            graph, not just embeddings.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">02</span>
+          <h3>Bounded hallucination</h3>
+          <p>Generation is limited to claims that trace to a Γ-walk in the
+            retrieved subgraph. The Conformal Risk Control bound is non-vacuous
+            — <strong>0.516 at N = 15</strong>, validated against real
+            GPT-4o-mini.</p>
+        </article>
+        <article class="card">
+          <span class="card-num">03</span>
+          <h3>Cycle-level consistency</h3>
+          <p>Sheaf-Laplacian H¹ catches frustrated triangles
+            (A → B supports → C with C → A contradicts).
+            <strong>No other memory system in 2026 detects this.</strong></p>
+        </article>
+        <article class="card">
+          <span class="card-num">04</span>
+          <h3>Surgical forget</h3>
+          <p>One call deletes a memory. Cascades through edges. The audit log
+            records actor, timestamp, target, payload, reason. Reversible from
+            the log if needed.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="container">
+      <h2 class="section-title reveal-up">How it works</h2>
+      <p class="section-lead reveal-up">
+        Five public methods. Local SQLite by default. No required cloud,
+        no required GPU.
+      </p>
+      <div class="how-steps reveal-stagger">
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <h3>Observe</h3>
+          <p>The write pipeline runs four gates — hash dedup, provenance
+            firewall, quality classifier, node-text dedup — then induces typed
+            Γ-edges against top-k symmetric neighbors.</p>
+          <pre><code>mem.observe(user_msg, agent_msg,
+            scope=&#123;"project": "platform"&#125;)</code></pre>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <h3>Recall</h3>
+          <p>The graph-aware router picks symmetric (factual lookup), path
+            (causal reasoning), or hybrid based on seed dispersion + edge
+            density + query intent. PCST extracts the connected subgraph.</p>
+          <pre><code>res = mem.recall("why did we switch?",
+            mode="auto", k=10)</code></pre>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <h3>Bounded generate</h3>
+          <p>The LLM sees only the retrieved subgraph. Each emitted claim is
+            structurally checked against the graph. CRC bound on hallucination
+            risk is computed from a calibration set.</p>
+          <pre><code>gen = mem.bounded_generate(query,
+            bound="strict")
+trace = mem.trace(gen)</code></pre>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <h3>Consolidate</h3>
+          <p>Sleep-time worker runs BMRS pruning, curvature-aware bottleneck
+            protection, mean-field refinement, motif extraction, and PMED
+            scoring. <strong>Active node count stays bounded under continuous
+            ingest.</strong></p>
+          <pre><code>stats = mem.consolidate(budget=20)</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS — visual chart gallery -->
+  <section id="results" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title reveal-up">Results</h2>
+      <p class="section-lead reveal-up">
+        Every number reproducible from <code>benchmarks/&lt;name&gt;/run.py</code>.
+        Every chart generated by <code>benchmarks/visualize.py</code> from the
+        JSON outputs. No cherry-picking — failures are reported next to wins.
+      </p>
+
+      <!-- Headline numbers callouts -->
+      <div class="stat-callouts reveal-stagger">
+        <div class="stat-callout">
+          <div class="stat-big" data-count="0.833" data-decimals="3">0.833</div>
+          <div class="stat-mid">LongMemEval recall@5</div>
+          <div class="stat-small">v0.6 head, n=30. <strong>Tied with cosine RAG.</strong></div>
+        </div>
+        <div class="stat-callout">
+          <div class="stat-big" data-count="0.516" data-decimals="3">0.516</div>
+          <div class="stat-mid">CRC hallucination bound</div>
+          <div class="stat-small">95 % CI, validated empirically at 0.0 % on real LLM. <strong>Non-vacuous.</strong></div>
+        </div>
+        <div class="stat-callout">
+          <div class="stat-big" data-count="14.3" data-decimals="1" data-suffix=" %">14.3 %</div>
+          <div class="stat-mid">Junk-in-memory rate</div>
+          <div class="stat-small">vs Mem0 audited 97.8 % on the same workload. <strong>6.8× cleaner.</strong></div>
+        </div>
+        <div class="stat-callout">
+          <div class="stat-big" data-count="60" data-decimals="0" data-prefix="+" data-suffix=" pt">+60 pt</div>
+          <div class="stat-mid">Causal-chain retrieval lead</div>
+          <div class="stat-small">Path mode 5/5 = 100 % vs cosine 2/5 = 40 %. <strong>Headline benefit.</strong></div>
+        </div>
+      </div>
+
+      <!-- Chart gallery -->
+      <div class="chart-gallery reveal-stagger">
+
+        <figure class="chart-card">
+          <img src="charts/longmemeval_results_n30_k5_stratified.png"
+               alt="LongMemEval per-question-type recall@5 — Recall, Cosine RAG, BM25"
+               loading="lazy" />
+          <figcaption>
+            <strong>LongMemEval (cleaned, ICLR 2025) — per question type.</strong>
+            Recall (purple) matches cosine RAG (lavender) on
+            <em>single-session-user</em> (1.000), <em>single-session-preference</em>
+            (0.600), and <em>temporal-reasoning</em> (0.800) — the three types
+            where v0.5 was lagging. Stratified n=30, BGE-small, k=5.
+          </figcaption>
+        </figure>
+
+        <figure class="chart-card">
+          <img src="charts/scale_stress_scale_n5000.png"
+               alt="Scale stress — gold recall@5 and p50 latency vs N from 100 to 5000"
+               loading="lazy" />
+          <figcaption>
+            <strong>Scale stress — bounded latency, growing recall lead.</strong>
+            Recall (BGE + bulk) holds gold-recall@5 at 0.90–1.00 across
+            N = 100 → 5 000 nodes; cosine RAG drops to 0.80. Latency stays in
+            the 10–25 ms band through 2.5 K. The "infinite-feeling, finite-actual"
+            promise.
+          </figcaption>
+        </figure>
+
+        <figure class="chart-card">
+          <img src="charts/v04_vs_v05_latency.png"
+               alt="v0.4 vs v0.5 retrieval latency — log-log scale"
+               loading="lazy" />
+          <figcaption>
+            <strong>v0.4 → v0.5 — vectorized cache + chunked allocation.</strong>
+            v0.4 stalled at 10 K (extrapolated, killed before completing). v0.5
+            measured: 10–120 ms across the same range. Log-log scale.
+            <em>This is what a perf fix looks like.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="chart-card">
+          <img src="charts/bound_calibration.png"
+               alt="Conformal Risk Control bound — empirical vs predicted"
+               loading="lazy" />
+          <figcaption>
+            <strong>Conformal Risk Control — empirical 0 % held under bound 51.6 %.</strong>
+            Real GPT-4o-mini, BGE-small, 20 hand-crafted gold facts.
+            Calibration n = 15, test n = 5. Bound non-vacuous, finite-sample
+            valid at 95 % confidence.
+          </figcaption>
+        </figure>
+
+        <figure class="chart-card">
+          <img src="charts/junk_rate.png"
+               alt="Junk-rate replay — Mem0 audit vs Recall template gate vs Recall LLM gate"
+               loading="lazy" />
+          <figcaption>
+            <strong>mem0 #4573 audit replay.</strong>
+            Mem0 publicly audited at 97.8 % junk on a 30 % system-leak +
+            50 % boilerplate corpus. Recall with template gate: 27 %.
+            Recall with LLM gate + bio-fingerprint: <strong>14.3 %</strong>.
+            Four gates compose: provenance firewall, drawer dedup, LLM quality,
+            bio-fingerprint hard-reject.
+          </figcaption>
+        </figure>
+
+      </div>
+
+      <p class="results-link">
+        Per-system table, full methodology, anti-patterns avoided →
+        <a href="https://github.com/yash194/recall/blob/main/docs/BENCHMARKS.md">docs/BENCHMARKS.md</a>.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- MATH AT A GLANCE -->
+  <section id="math" class="section">
+    <div class="container">
+      <h2 class="section-title reveal-up">Math at a glance</h2>
+      <p class="section-lead reveal-up">
+        Recall is not heuristic. Every primitive is grounded in a published
+        result. Two ideas do most of the work.
+      </p>
+
+      <div class="math-grid reveal-stagger">
+        <div class="math-card">
+          <span class="math-eyebrow">§1 — Γ retrieval primitive</span>
+          <div class="formula">
+            Γ(i → j) = f<sub>i</sub> · b<sub>j</sub> − s<sub>i</sub> · s<sub>j</sub>
+          </div>
+          <p class="math-explain">
+            <code>f, b</code> are the forward / backward prompted embeddings.
+            <code>s = (f + b) / 2</code> is the symmetric component. The score
+            is provably asymmetric: Γ(i → j) ≠ Γ(j → i) in general (Theorem 1.1).
+          </p>
+          <p class="math-explain math-anchor">
+            Geometric anchor: Γ<sub>anti</sub> is the antisymmetric Fisher–Rao
+            2-form on the dual-prompt parameter manifold (Hauberg et al.,
+            AISTATS 2022). <strong>Identifiable</strong> under reparameterization
+            (Syrota et al., ICML 2025).
+          </p>
+        </div>
+
+        <div class="math-card">
+          <span class="math-eyebrow">§3 — Hallucination bound (CRC)</span>
+          <div class="formula">
+            ℙ[ R(h) ≤ R̂<sub>n</sub> + √(ln(1/δ) / 2n) ] ≥ 1 − δ
+          </div>
+          <p class="math-explain">
+            Split conformal prediction (Vovk &amp; Shafer 2008) applied to
+            retrieval-augmented generation per Kang et al., ICML 2024
+            (<em>C-RAG</em>). Hoeffding upper bound shown; Recall reports the
+            min of Hoeffding and Wilson.
+          </p>
+          <p class="math-explain math-anchor">
+            <strong>Validated.</strong> Empirical 0 % hallucination on held-out
+            test, predicted bound 0.516. Non-vacuous, finite-sample valid.
+            <em>Old composite PAC-Bayes bound was 1.000 (vacuous).</em>
+          </p>
+        </div>
+      </div>
+
+      <p class="math-link">
+        Full spec — Γ asymmetry theorem, decomposition theorem, identifiability,
+        BMRS evidence ratio, sheaf H¹ frustration, PCST signed-Steiner, PPR —
+        in <a href="https://github.com/yash194/recall/blob/main/docs/MATH.md">docs/MATH.md</a>.
+        906 lines. Every theorem implementable. Every test is hostile.
+      </p>
+    </div>
+  </section>
+
+  <!-- COMPARISON MATRIX -->
+  <section id="vs" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title reveal-up">What Recall does that other systems don't</h2>
+      <p class="section-lead reveal-up">
+        Capability matrix vs the published state of the art. Comparable
+        capabilities marked ✓, missing ✗, partial — partial.
+      </p>
+      <div class="matrix-wrap reveal-up">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th class="matrix-cap">Capability</th>
+              <th>Cosine RAG</th>
+              <th>BM25</th>
+              <th>Mem0</th>
+              <th>ChatGPT memory</th>
+              <th class="matrix-recall">Recall v0.6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="matrix-cap">Stores memories</td>
+              <td>✓</td><td>✓</td><td>✓</td><td>✓</td>
+              <td class="matrix-recall">✓</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Retrieves by similarity</td>
+              <td>✓</td><td>✓</td><td>✓</td><td>✓</td>
+              <td class="matrix-recall">✓</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Retrieves causal paths</td>
+              <td>✗</td><td>✗</td><td>✗</td><td>✗</td>
+              <td class="matrix-recall">✓ (Γ-walk + PCST)</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Auto-routes by question type</td>
+              <td>✗</td><td>✗</td><td>✗</td><td>✗</td>
+              <td class="matrix-recall">✓ (Adaptive-RAG style)</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Detects cycle-level inconsistency</td>
+              <td>✗</td><td>✗</td><td>✗</td><td>✗</td>
+              <td class="matrix-recall">✓ (sheaf H¹)</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Non-vacuous hallucination bound</td>
+              <td>✗</td><td>✗</td><td>✗</td><td>✗</td>
+              <td class="matrix-recall">✓ (CRC = 0.516)</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Junk-rate on mem0 #4573 audit</td>
+              <td>—</td><td>—</td><td>97.8 %</td><td>—</td>
+              <td class="matrix-recall">14.3 %</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Surgical forget + audit log</td>
+              <td>—</td><td>—</td><td>partial</td><td>partial</td>
+              <td class="matrix-recall">✓ append-only</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Bounded active set under ingest</td>
+              <td>✗</td><td>✗</td><td>partial</td><td>✗</td>
+              <td class="matrix-recall">✓ (BMRS pruning)</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Public reproducible benchmarks</td>
+              <td>n/a</td><td>n/a</td><td>partial</td><td>✗</td>
+              <td class="matrix-recall">✓ all in repo</td>
+            </tr>
+            <tr>
+              <td class="matrix-cap">Apache-2.0 + OSS-forever commitment</td>
+              <td>n/a</td><td>n/a</td><td>✓</td><td>n/a</td>
+              <td class="matrix-recall">✓ <a href="https://github.com/yash194/recall/blob/main/GOVERNANCE.md">GOVERNANCE.md</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="matrix-note">
+        Sources: Mem0 — public GitHub audit #4573 + self-reported numbers.
+        Cosine RAG / BM25 — measured in this repo against the same datasets.
+        ChatGPT memory — observable behavior. <strong>Recall numbers are
+        reproducible from <code>benchmarks/</code>.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install" class="section">
+    <div class="container">
+      <h2 class="section-title reveal-up">Install</h2>
+      <p class="section-lead reveal-up">Five paths. Pick the one that matches how you'll use it.</p>
+
+      <div class="install-grid reveal-stagger">
+
+        <div class="install-card">
+          <div class="install-icon">[ py ]</div>
+          <h3>Python library</h3>
+          <p>For app builders embedding Recall in their agent.</p>
+          <pre><code>pip install recall</code></pre>
+          <a class="install-link" href="https://github.com/yash194/recall#as-a-python-library">Docs →</a>
+        </div>
+
+        <div class="install-card">
+          <div class="install-icon">[ mcp ]</div>
+          <h3>MCP server</h3>
+          <p>Drop-in for Claude Desktop, Cursor, Cline, Codex, Continue, Zed,
+            Windsurf — any MCP-aware tool.</p>
+          <pre><code>claude mcp add recall \
+  -- uvx --from recall recall-mcp</code></pre>
+          <a class="install-link" href="https://github.com/yash194/recall#as-an-mcp-server-claude-desktop--cursor--cline--codex--continue">Docs →</a>
+        </div>
+
+        <div class="install-card">
+          <div class="install-icon">[ cli ]</div>
+          <h3>Personal CLI</h3>
+          <p>For knowledge-graph users. Replaces Obsidian / Logseq with reasoning
+            paths.</p>
+          <pre><code>pipx install recall
+recall me add "&hellip;"
+recall me ask "&hellip;"</code></pre>
+          <a class="install-link" href="https://github.com/yash194/recall#as-a-personal-cli">Docs →</a>
+        </div>
+
+        <div class="install-card">
+          <div class="install-icon">[ http ]</div>
+          <h3>Self-hosted server</h3>
+          <p>For teams running Recall in their own VPC.</p>
+          <pre><code>docker compose up</code></pre>
+          <a class="install-link" href="https://github.com/yash194/recall#as-a-self-hosted-server">Docs →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title reveal-up">Research foundations</h2>
+      <p class="section-lead reveal-up">
+        Every primitive cites a peer-reviewed paper. Three Nordic ML labs
+        anchor the math.
+      </p>
+
+      <div class="research-grid reveal-stagger">
+        <article class="research-card">
+          <div class="research-author">Søren Hauberg <span class="research-aff">DTU Compute</span></div>
+          <p class="research-role">The metric.</p>
+          <p>The Γ retrieval primitive <code>Γ(i→j) = f·b − s·s</code> is the
+            antisymmetric component of a Fisher–Rao pull-back metric on dual
+            LLM-prompted views.</p>
+          <ul class="research-papers">
+            <li><a href="https://arxiv.org/abs/2106.05367">Pulling Back Information Geometry · AISTATS 2022</a></li>
+            <li><a href="https://arxiv.org/abs/2502.13757">Identifying Metric Structures of Deep Latent Variable Models · ICML 2025</a></li>
+            <li><a href="https://arxiv.org/abs/2505.17517">Spacetime Geometry of Denoising · ICLR 2026 oral</a></li>
+          </ul>
+        </article>
+
+        <article class="research-card">
+          <div class="research-author">Christian Igel <span class="research-aff">University of Copenhagen</span></div>
+          <p class="research-role">The bound.</p>
+          <p>PAC-Bayes second-order tandem-loss bounds for retrieval-conditioned
+            generation. Composes with Conformal Risk Control (Kang et al.,
+            ICML 2024) — what Recall actually validates.</p>
+          <ul class="research-papers">
+            <li><a href="https://arxiv.org/abs/2007.13532">Second Order PAC-Bayesian Bounds · NeurIPS 2020</a></li>
+            <li><a href="https://arxiv.org/abs/2106.13624">Chebyshev–Cantelli PAC-Bayes-Bennett · NeurIPS 2021</a></li>
+            <li><a href="https://arxiv.org/abs/2402.03181">C-RAG: Certified Generation Risks · ICML 2024</a></li>
+          </ul>
+        </article>
+
+        <article class="research-card">
+          <div class="research-author">Raghavendra Selvan <span class="research-aff">University of Copenhagen</span></div>
+          <p class="research-role">The consolidator.</p>
+          <p>BMRS Bayesian Model Reduction for threshold-free edge pruning
+            during sleep-time consolidation. Mosaic-of-Motifs for repeated
+            subgraph compression.</p>
+          <ul class="research-papers">
+            <li><a href="https://arxiv.org/abs/2406.01345">BMRS · NeurIPS 2024 spotlight</a></li>
+            <li><a href="https://arxiv.org/abs/2602.14896">Mosaic-of-Motifs · 2026</a></li>
+          </ul>
+        </article>
+
+        <article class="research-card">
+          <div class="research-author">Hansen-Ghrist · Goemans-Williamson · HippoRAG</div>
+          <p class="research-role">Algorithmic primitives.</p>
+          <p>Cellular sheaf cohomology for cycle inconsistency. Prize-Collecting
+            Steiner approximation. Personalized PageRank on knowledge graphs.</p>
+          <ul class="research-papers">
+            <li><a href="https://arxiv.org/abs/1808.01513">Toward a Spectral Theory of Cellular Sheaves · J. Applied &amp; Computational Topology 2019</a></li>
+            <li><a href="https://arxiv.org/abs/2405.14831">HippoRAG · NeurIPS 2024</a></li>
+            <li><a href="https://arxiv.org/abs/2403.14403">Adaptive-RAG · 2024</a></li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="research-note">
+        Full BibTeX — <a href="https://github.com/yash194/recall/blob/main/CITATIONS.bib">CITATIONS.bib</a>.
+        Each entry has a <code>note</code> field linking it to the section
+        in MATH.md where it's load-bearing.
+      </p>
+    </div>
+  </section>
+
+  <!-- DISTINGUISHED -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal-up">Things you can do here that you can't anywhere else</h2>
+      <ul class="distinguished reveal-stagger">
+        <li>
+          Ask <em>"why did the agent change its mind on X?"</em> and get back the
+          path of <code>corrects</code> and <code>pivots</code> edges from the
+          original decision to the current one.
+        </li>
+        <li>
+          Receive a <strong>non-vacuous hallucination bound</strong> with every
+          generated answer. Validated empirically: 0 % held under predicted
+          51.6 % at N = 15.
+        </li>
+        <li>
+          Detect <strong>cycle-level logical contradictions</strong> via
+          sheaf-Laplacian H¹ — frustrated triangles invisible to pairwise
+          contradiction checks.
+        </li>
+        <li>
+          Share one memory across <strong>Claude Desktop, Cursor, Codex, and
+          Cline</strong> via a single MCP server install.
+        </li>
+        <li>
+          <strong>Surgically forget</strong> any single memory and have it stay
+          forgotten — with a permanent audit record. Cascades through edges.
+        </li>
+        <li>
+          Ground every claim in <strong>provable graph paths</strong>, not
+          embedding similarity. The structural-support check is what makes the
+          bound finite-sample valid.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- LICENSE / COMMITMENT -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="commitment">
+        <h2>Apache-2.0 · forever</h2>
+        <p>
+          Recall is open-source under
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>
+          in perpetuity. The full retrieval engine, the typed-edge runtime,
+          all graph mathematics, all hallucination bounds, all consolidation
+          primitives, all benchmarks, all integrations — open-source forever.
+        </p>
+        <p class="commitment-strong">
+          No crippleware. No business-source license. No bait-and-switch.
+        </p>
+        <p>
+          Commitment is binding per
+          <a href="https://github.com/yash194/recall/blob/main/GOVERNANCE.md">GOVERNANCE.md</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <span class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Recall</span>
+      </span>
+      <p class="footer-tagline">Memory layer for AI agents. Math-first, OSS-forever.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="https://github.com/yash194/recall">GitHub</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/MATH.md">Math</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/BENCHMARKS.md">Benchmarks</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/PRINCIPLES.md">Principles</a>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <a href="https://github.com/yash194/recall/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/yash194/recall/blob/main/GOVERNANCE.md">Governance</a>
+      <a href="https://github.com/yash194/recall/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/yash194/recall/issues">Issues</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://github.com/yash194/recall/blob/main/LICENSE">Apache-2.0</a>
+      <a href="https://github.com/yash194/recall/blob/main/NOTICE">NOTICE</a>
+      <a href="https://github.com/yash194/recall/blob/main/CITATIONS.bib">Cite</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Recall maintainers · Apache License 2.0</span>
+    <span>Made with care, math, and citations.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

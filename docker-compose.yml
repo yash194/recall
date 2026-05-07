@@ -1,0 +1,97 @@
+# docker-compose.yml — Recall self-hosted reference deployment.
+#
+# Brings up:
+#   - recall-server     (FastAPI HTTP server)
+#   - recall-consolidator  (background sleep-time worker)
+#   - postgres          (storage backend with pgvector)
+#   - redis             (cache + idempotency)
+#
+# Usage:
+#   docker compose up -d
+#   curl http://localhost:8765/v1/memory/stats?tenant=default
+#
+# All-in-one: SQLite mode (no Postgres needed)
+#   RECALL_STORAGE=sqlite docker compose up recall-server
+
+version: "3.9"
+
+services:
+  recall-server:
+    image: ghcr.io/yash194/recall:latest
+    build: .
+    ports:
+      - "8765:8765"
+    environment:
+      RECALL_STORAGE: ${RECALL_STORAGE:-postgres}
+      DATABASE_URL: postgresql://recall:recallpass@postgres:5432/recall
+      REDIS_URL: redis://redis:6379/0
+      RECALL_KEYS: ${RECALL_KEYS:-devkey:default}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+    volumes:
+      - recall-data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8765/').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  recall-consolidator:
+    image: ghcr.io/yash194/recall:latest
+    build: .
+    command:
+      - python
+      - -c
+      - |
+        import os, time
+        from recall import Memory
+        # Run consolidation pass every 6 hours per tenant
+        while True:
+          tenant = os.environ.get("RECALL_TENANT", "default")
+          mem = Memory(tenant=tenant, storage=f"sqlite:///data/{tenant}.db")
+          stats = mem.consolidate(budget=20)
+          print(f"[consolidator] tenant={tenant} regions={stats.regions_processed} pruned={stats.edges_pruned}", flush=True)
+          time.sleep(int(os.environ.get("CONSOLIDATE_INTERVAL_S", "21600")))
+    environment:
+      RECALL_TENANT: ${RECALL_TENANT:-default}
+      DATABASE_URL: postgresql://recall:recallpass@postgres:5432/recall
+    volumes:
+      - recall-data:/data
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: ankane/pgvector:v0.5.1
+    environment:
+      POSTGRES_USER: recall
+      POSTGRES_PASSWORD: recallpass
+      POSTGRES_DB: recall
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recall -d recall"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  recall-data:
+  postgres-data:
+  redis-data:

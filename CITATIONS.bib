@@ -1,0 +1,280 @@
+% Recall — load-bearing citations
+% Each entry corresponds to a section in docs/MATH.md or docs/ARCHITECTURE.md.
+% Last updated: 2026-05-07 (v0.6).
+
+% ===========================================================================
+% Γ-algebra and Fisher-Rao pull-back (MATH §1, §2)
+% ===========================================================================
+
+@inproceedings{arvanitidis2022pulling,
+  title     = {Pulling back information geometry},
+  author    = {Arvanitidis, Georgios and Gonz{\'a}lez-Duque, Miguel and
+               Pouplin, Alison and Kalatzis, Dimitris and Hauberg, S{\o}ren},
+  booktitle = {AISTATS},
+  year      = {2022},
+  note      = {Recall §2 — provides the pull-back metric framework that
+               places Γ_anti as the antisymmetric component of the
+               Fisher-Rao 2-form on the dual-prompt parameter manifold.}
+}
+
+@inproceedings{syrota2025identifying,
+  title     = {Identifying Metric Structures of Deep Latent Variable Models},
+  author    = {Syrota, Ivan and Zainchkovskyy, Aleksey and Xi, Hao and
+               Bloem-Reddy, Benjamin and Hauberg, S{\o}ren},
+  booktitle = {ICML},
+  year      = {2025},
+  note      = {Recall §2.4 — identifiability theorem: Γ_anti is invariant
+               under reparameterization of the embedding map up to a
+               global scale.}
+}
+
+% ===========================================================================
+% Hallucination bounds (MATH §3)
+% ===========================================================================
+
+@inproceedings{masegosa2020second,
+  title     = {Second order PAC-Bayesian bounds for the weighted majority
+               vote},
+  author    = {Masegosa, Andr{\'e}s and Lorenzen, Stephan and Igel, Christian
+               and Seldin, Yevgeny},
+  booktitle = {NeurIPS},
+  year      = {2020},
+  note      = {Recall §3.4 — tandem-loss PAC-Bayes bound on weighted
+               majority vote. Used for retrieval-conditioned generation.}
+}
+
+@inproceedings{wu2021chebyshev,
+  title     = {Chebyshev–Cantelli PAC-Bayes-Bennett inequality for the
+               weighted majority vote},
+  author    = {Wu, Yi-Shan and Masegosa, Andr{\'e}s and Lorenzen, Stephan
+               and Igel, Christian and Seldin, Yevgeny},
+  booktitle = {NeurIPS},
+  year      = {2021},
+  note      = {Recall §3.4 (eqn 3.2) — Chebyshev–Cantelli refinement of
+               the second-order PAC-Bayes bound.}
+}
+
+@article{vovk2008conformal,
+  title   = {A tutorial on conformal prediction},
+  author  = {Vovk, Vladimir and Shafer, Glenn},
+  journal = {Journal of Machine Learning Research},
+  volume  = {9},
+  pages   = {371--421},
+  year    = {2008},
+  note    = {Recall §3.7 — split conformal prediction framework that
+             underlies the CRC hallucination bound.}
+}
+
+@inproceedings{kang2024crag,
+  title     = {C-RAG: Certified Generation Risks for Retrieval-Augmented
+               Language Models},
+  author    = {Kang, Mintong and Wei, Wei and Cui, Lin and Bao, Zhanqiu
+               and Wei, Mingjie and Wang, Bo},
+  booktitle = {ICML},
+  year      = {2024},
+  note      = {Recall §3.5 — Hoeffding + Wilson conformal-risk bounds for
+               retrieval-augmented generation. The bound actually
+               validated in benchmarks/bound_calibration/.}
+}
+
+% ===========================================================================
+% BMRS pruning, mean-field, motif extraction (MATH §4)
+% ===========================================================================
+
+@inproceedings{wright2024bmrs,
+  title     = {{BMRS}: Bayesian Model Reduction for Structured Pruning},
+  author    = {Wright, Dustin and Igel, Christian and Selvan, Raghavendra},
+  booktitle = {NeurIPS (spotlight)},
+  year      = {2024},
+  archivePrefix = {arXiv},
+  eprint    = {2406.01345},
+  note      = {Recall §4 — closed-form log-evidence ratio used by
+               sleep-time edge pruning. Threshold-free.}
+}
+
+@article{selvan2020graph,
+  title   = {Graph Refinement based Airway Extraction using Mean-Field
+             Networks and Graph Neural Networks},
+  author  = {Selvan, Raghavendra and Welling, Max and others},
+  journal = {Medical Image Analysis (MedIA)},
+  year    = {2020},
+  note    = {Recall §4.6 — mean-field GNN smoothing applied to
+             typed-edge consolidation.}
+}
+
+@misc{bakhtiarifard2026mosaic,
+  title         = {Algorithmic Simplification of Neural Networks with
+                   Mosaic-of-Motifs},
+  author        = {Bakhtiarifard, Pegah and Igel, Christian and
+                   Selvan, Raghavendra},
+  year          = {2026},
+  archivePrefix = {arXiv},
+  eprint        = {2602.14896},
+  note          = {Recall §4.5 — recurring-subgraph motif extraction
+                   used by Tier-3 consolidation.}
+}
+
+% ===========================================================================
+% Sheaf cohomology (MATH §5)
+% ===========================================================================
+
+@article{hansen2019spectral,
+  title   = {Toward a Spectral Theory of Cellular Sheaves},
+  author  = {Hansen, Jakob and Ghrist, Robert},
+  journal = {Journal of Applied and Computational Topology},
+  volume  = {3},
+  number  = {4},
+  pages   = {315--358},
+  year    = {2019},
+  note    = {Recall §5 — sheaf Laplacian and H¹ cohomology used to
+             detect frustrated cycles in the typed-edge graph.}
+}
+
+@inproceedings{bodnar2022neural,
+  title     = {Neural Sheaf Diffusion: A Topological Perspective on
+               Heterophily and Oversmoothing in {GNNs}},
+  author    = {Bodnar, Cristian and Di Giovanni, Francesco and
+               Chamberlain, Benjamin Paul and Li{\`o}, Pietro and
+               Bronstein, Michael},
+  booktitle = {NeurIPS},
+  year      = {2022},
+  note      = {Recall §5 reference — sheaf-theoretic perspective on
+               graph signal processing.}
+}
+
+% ===========================================================================
+% Subgraph extraction (MATH §6)
+% ===========================================================================
+
+@article{bienstock1993pcst,
+  title   = {A note on the prize collecting traveling salesman problem},
+  author  = {Bienstock, Daniel and Goemans, Michel X. and
+             Simchi-Levi, David and Williamson, David P.},
+  journal = {Mathematical Programming},
+  volume  = {59},
+  pages   = {413--420},
+  year    = {1993},
+  note    = {Recall §6 — original PCST formulation.}
+}
+
+@article{goemans1995general,
+  title   = {A general approximation technique for constrained forest
+             problems},
+  author  = {Goemans, Michel X. and Williamson, David P.},
+  journal = {SIAM Journal on Computing},
+  volume  = {24},
+  number  = {2},
+  pages   = {296--317},
+  year    = {1995},
+  note    = {Recall §6.2 — primal-dual 2-approximation that
+             pcst_extract implements.}
+}
+
+@article{tuncbag2012steinernet,
+  title   = {SteinerNet: a web server for integrating omics data on
+             signed networks},
+  author  = {Tuncbag, Nurcan and Braunstein, Alfredo and Pagnani, Andrea
+             and Huang, Shao-Shan Carol and Chayes, Jennifer and
+             Borgs, Christian and Zecchina, Riccardo and Fraenkel, Ernest},
+  journal = {Bioinformatics},
+  year    = {2012},
+  note    = {Recall §6 — signed-weight extension of PCST adapted for
+             contradicting edges.}
+}
+
+% ===========================================================================
+% Personalized PageRank, retrieval routing (MATH §7)
+% ===========================================================================
+
+@techreport{page1999pagerank,
+  title       = {The PageRank Citation Ranking: Bringing Order to the Web},
+  author      = {Page, Lawrence and Brin, Sergey and Motwani, Rajeev and
+                 Winograd, Terry},
+  institution = {Stanford InfoLab},
+  year        = {1999},
+  number      = {1999-66},
+  note        = {Recall §7 reference — classic PageRank.}
+}
+
+@inproceedings{gutierrez2024hipporag,
+  title     = {{HippoRAG}: Neurobiologically Inspired Long-Term Memory
+               for Large Language Models},
+  author    = {Guti{\'e}rrez, Bernal Jim{\'e}nez and Salakhutdinov, Ruslan
+               and Bisk, Yonatan and Lewis, Mike and others},
+  booktitle = {NeurIPS},
+  year      = {2024},
+  note      = {Recall §7 — Personalized PageRank on knowledge-graph
+               edges for retrieval. Direct precedent for Recall's PPR
+               mode on the typed-edge graph.}
+}
+
+@misc{gutierrez2025hipporag2,
+  title         = {{HippoRAG 2}: From Memory to Reasoning over
+                   Open-Domain Knowledge},
+  author        = {Guti{\'e}rrez, Bernal Jim{\'e}nez and others},
+  year          = {2025},
+  archivePrefix = {arXiv},
+  eprint        = {2502.14802},
+  note          = {Recall §7 reference — extended PPR + reasoning.}
+}
+
+@misc{jeong2024adaptive,
+  title         = {Adaptive-{RAG}: Learning to Adapt Retrieval-Augmented
+                   Large Language Models through Question Complexity},
+  author        = {Jeong, Soyeong and Baek, Jinheon and Kim, Sukmin and
+                   Park, Jong C. and Hwang, Sung Ju},
+  year          = {2024},
+  archivePrefix = {arXiv},
+  eprint        = {2403.14403},
+  note          = {Recall — auto-router design (Memory.recall mode='auto').
+                   Routes between symmetric / path / hybrid based on
+                   query complexity.}
+}
+
+% ===========================================================================
+% Datasets and baselines
+% ===========================================================================
+
+@misc{wu2024longmemeval,
+  title         = {{LongMemEval}: Benchmarking Chat Assistants on
+                   Long-Term Interactive Memory},
+  author        = {Wu, Di and others},
+  year          = {2024},
+  archivePrefix = {arXiv},
+  eprint        = {2410.10813},
+  howpublished  = {Hugging Face: \url{xiaowu0162/longmemeval-cleaned}},
+  note          = {ICLR 2025. The cleaned variant used by Recall's
+                   LongMemEval benchmark.}
+}
+
+@inproceedings{yang2018hotpotqa,
+  title     = {{HotpotQA}: A Dataset for Diverse, Explainable Multi-hop
+               Question Answering},
+  author    = {Yang, Zhilin and Qi, Peng and Zhang, Saizheng and
+               Bengio, Yoshua and Cohen, William W. and
+               Salakhutdinov, Ruslan and Manning, Christopher D.},
+  booktitle = {EMNLP},
+  year      = {2018}
+}
+
+% ===========================================================================
+% Embedders
+% ===========================================================================
+
+@misc{xiao2023bge,
+  title         = {{C-Pack}: Packaged Resources To Advance General Chinese
+                   Embedding (BGE family)},
+  author        = {Xiao, Shitao and Liu, Zheng and others},
+  year          = {2023},
+  howpublished  = {Hugging Face: \url{BAAI/bge-small-en-v1.5}},
+  note          = {Recall benchmarks use bge-small-en-v1.5 as the BGE
+                   embedder.}
+}
+
+@inproceedings{robertson1995okapi,
+  title     = {Okapi at {TREC}-3},
+  author    = {Robertson, Stephen E. and Walker, Steve and others},
+  booktitle = {TREC-3},
+  year      = {1995},
+  note      = {BM25 origin. Implementation: rank\_bm25.BM25Okapi.}
+}

@@ -1,0 +1,56 @@
+{
+  "n_cal": 15,
+  "n_test": 5,
+  "empirical_cal_rate": 0.0,
+  "empirical_test_rate": 0.0,
+  "predicted_bound": {
+    "hoeffding": 0.3160027570319596,
+    "wilson": 0.3475839710312496,
+    "crc_min": 0.3160027570319596,
+    "empirical_risk": 0.0,
+    "n": 15
+  },
+  "bound_holds_on_test": true,
+  "test_results": [
+    {
+      "question": "What's our SLA on support?",
+      "gold": "4-hour",
+      "answer": "Support SLA is 4-hour first-response, 24-hour resolution.",
+      "correct": true,
+      "bound_value": 0.641447300788884,
+      "flagged_claims": 0
+    },
+    {
+      "question": "What are Stripe's payment processing fees?",
+      "gold": "2.9%",
+      "answer": "Stripe payment processing fees average 2.9% + $0.30 per transaction.",
+      "correct": true,
+      "bound_value": 0.6536889318149874,
+      "flagged_claims": 0
+    },
+    {
+      "question": "How much capacity is in prod-eu-west-1?",
+      "gold": "48 vCPU",
+      "answer": "The prod-eu-west-1 namespace has 48 vCPU reserved capacity.",
+      "correct": true,
+      "bound_value": 0.642673372054755,
+      "flagged_claims": 0
+    },
+    {
+      "question": "What's the migration date for the queue switch?",
+      "gold": "March 2024",
+      "answer": "The queue migration to Redis Streams happened in March 2024.",
+      "correct": true,
+      "bound_value": 0.6453426684294327,
+      "flagged_claims": 0
+    },
+    {
+      "question": "Who proposed the bi-phasic dose-response model?",
+      "gold": "Priya Singh",
+      "answer": "Priya Singh proposed the bi-phasic dose-response model.",
+      "correct": true,
+      "bound_value": 0.6433122722851224,
+      "flagged_claims": 0
+    }
+  ]
+}

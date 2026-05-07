@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="description" content="Recall — full usage guide. Python library, MCP server (Claude Desktop, Cursor, Cline, Continue, Zed, Windsurf), recall CLI, recall me personal CLI, FastAPI HTTP server. Every command copy-pasteable." />
+<meta name="theme-color" content="#faf6ed" />
+<meta property="og:title" content="Recall — Usage guide" />
+<meta property="og:description" content="Every supported way to use Recall — Python lib, MCP, CLI, server. Copy-pasteable commands." />
+<meta property="og:type" content="article" />
+<title>Recall — How to use</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="usage-page">
+
+<div class="ambient-bg" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">
+      <span class="logo-mark"></span>
+      <span class="logo-text">Recall</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#what">What</a>
+      <a href="index.html#how">How</a>
+      <a href="index.html#results">Results</a>
+      <a href="index.html#math">Math</a>
+      <a href="index.html#vs">Compare</a>
+      <a href="usage.html" class="is-active">Usage</a>
+      <a href="index.html#install">Install</a>
+      <a class="github-link" href="https://github.com/yash194/recall">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="usage-hero">
+    <div class="container">
+      <h1 class="reveal-up">How to <span class="accent">actually use</span> Recall</h1>
+      <p class="lead reveal-up">
+        Every supported way — Python library, MCP server, CLI, personal CLI,
+        and self-hosted HTTP server — with copy-pasteable commands.
+        Pick your path; skip the rest.
+      </p>
+      <div class="breadcrumbs reveal-up">
+        <a href="index.html">Home</a><span>›</span>Usage
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="usage-layout">
+
+      <!-- TOC sidebar -->
+      <aside class="toc">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#path">Pick your path</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#python">Python library</a></li>
+          <li><a href="#mcp">MCP server</a></li>
+          <li><a href="#cli">recall CLI</a></li>
+          <li><a href="#me">recall me personal CLI</a></li>
+          <li><a href="#server">Self-hosted server</a></li>
+          <li><a href="#examples">Examples + benchmarks</a></li>
+          <li><a href="#recipes">Common recipes</a></li>
+          <li><a href="#config">Configuration</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+      </aside>
+
+      <!-- Doc content -->
+      <article class="doc-content">
+
+        <!-- 1. Pick your path -->
+        <div class="path-picker reveal-up" id="path">
+          <h2><span class="h-num">01</span>Pick your path in 30 seconds</h2>
+          <p>You can run any combination of these against the
+            <strong>same SQLite database</strong> — the MCP server, the CLI,
+            and the Python library all read/write the same file when pointed
+            at it.</p>
+          <div class="path-tags">
+            <a class="path-tag" href="#python">→ Python lib</a>
+            <a class="path-tag" href="#mcp">→ MCP (Claude Desktop / Cursor / …)</a>
+            <a class="path-tag" href="#cli">→ recall CLI</a>
+            <a class="path-tag" href="#me">→ recall me</a>
+            <a class="path-tag" href="#server">→ HTTP server</a>
+            <a class="path-tag" href="#examples">→ examples + benchmarks</a>
+          </div>
+          <table style="margin-top:18px">
+            <thead>
+              <tr><th>You are…</th><th>Use this</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Building an AI agent / app in Python</td><td><a href="#python">Python library</a></td></tr>
+              <tr><td>Using Claude Desktop, Cursor, Cline, Continue, Zed, or Windsurf</td><td><a href="#mcp">MCP server</a></td></tr>
+              <tr><td>Running scripted ingest from the shell (cron, pipeline)</td><td><a href="#cli"><code>recall</code> CLI</a></td></tr>
+              <tr><td>Want a personal "second brain" / knowledge graph</td><td><a href="#me"><code>recall me</code></a></td></tr>
+              <tr><td>Hosting Recall as a service for a team</td><td><a href="#server">FastAPI server</a></td></tr>
+              <tr><td>Just want to see numbers from the benchmarks</td><td><a href="#examples">examples + benchmarks</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2. Install -->
+        <h2 id="install" class="reveal-up"><span class="h-num">02</span>Install</h2>
+        <p>The package is <code>recall</code>. Required: Python 3.10+. SQLite is stdlib.</p>
+
+        <h3 class="reveal-up"><span class="h-num">2.1</span>Quick install (Python lib only)</h3>
+<pre><code>pip install recall</code></pre>
+        <p>Gives you <code>recall.Memory</code>, the deterministic
+          <code>HashEmbedder</code> + <code>MockLLMClient</code>, SQLite
+          storage, and the CLI scripts (<code>recall</code>,
+          <code>recall me</code>). Zero non-Python dependencies.</p>
+
+        <h3 class="reveal-up"><span class="h-num">2.2</span>With BGE neural embedder (recommended)</h3>
+<pre><code>pip install "recall[embed-bge]"</code></pre>
+        <p>Adds <code>sentence-transformers</code> + <code>torch</code>. Lets
+          you use <code>BGEEmbedder("BAAI/bge-small-en-v1.5")</code> — what
+          every benchmark uses.</p>
+
+        <h3 class="reveal-up"><span class="h-num">2.3</span>With everything</h3>
+<pre><code>pip install "recall[embed-bge,llm-openai,server,mcp,graph]"</code></pre>
+
+        <table>
+          <thead><tr><th>Extra</th><th>Adds</th></tr></thead>
+          <tbody>
+            <tr><td><code>embed-bge</code></td><td>sentence-transformers, torch — neural embeddings</td></tr>
+            <tr><td><code>llm-openai</code></td><td>openai SDK — for <code>OpenAIClient</code> + <code>bounded_generate</code> with real LLM</td></tr>
+            <tr><td><code>llm-anthropic</code></td><td>anthropic SDK — same, with Claude</td></tr>
+            <tr><td><code>server</code></td><td>fastapi, uvicorn, pydantic — HTTP server</td></tr>
+            <tr><td><code>mcp</code></td><td>mcp ≥ 1.0 — MCP stdio server</td></tr>
+            <tr><td><code>graph</code></td><td>scipy, networkx, POT, gudhi — full spectral / topology / curvature / sheaf</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">2.4</span>Develop from source</h3>
+<pre><code>git clone https://github.com/yash194/recall.git
+cd recall
+pip install -e ".[dev]"
+PYTHONPATH=src pytest tests/ -q   # 154 passing</code></pre>
+
+        <!-- 3. Python library -->
+        <h2 id="python" class="reveal-up"><span class="h-num">03</span>Python library</h2>
+
+        <h3 class="reveal-up"><span class="h-num">3.1</span>Three lines</h3>
+<pre><code>from recall import Memory
+
+mem = Memory(tenant="my_app")
+mem.observe("user message", "agent reply", scope={"project": "platform"})
+result = mem.recall("what did we decide about queues?", scope={"project": "platform"})</code></pre>
+        <p>SQLite database is created at <code>:memory:</code> by default.
+          To persist:</p>
+<pre><code>mem = Memory(tenant="my_app", storage="sqlite:///path/to/recall.db")</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">3.2</span>The five public methods</h3>
+        <table>
+          <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>observe(user_msg, agent_msg, scope, source)</code></td><td>Store one turn. Quality-gated, dedup'd, provenance-checked.</td></tr>
+            <tr><td><code>recall(query, scope, mode, k, depth)</code></td><td>Retrieve a connected reasoning subgraph. Modes: <code>auto</code>, <code>symmetric</code>, <code>path</code>, <code>hybrid</code>.</td></tr>
+            <tr><td><code>bounded_generate(query, scope, bound, k, depth)</code></td><td>Recall + LLM generate with structural-support check. <code>strict</code> raises on unsupported, <code>soft</code> flags, <code>off</code> skips.</td></tr>
+            <tr><td><code>trace(generation)</code></td><td>Full provenance trail.</td></tr>
+            <tr><td><code>forget(node_id, reason, actor)</code></td><td>Surgical deprecate + cascade through edges + audit.</td></tr>
+          </tbody>
+        </table>
+        <p>Plus three convenience helpers added in v0.5/v0.6:</p>
+        <table>
+          <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>bulk_observe(texts, scope, source)</code></td><td>Batch-ingest a list of texts via the bulk-document fast path.</td></tr>
+            <tr><td><code>consolidate(budget, induce_edges, induce_k)</code></td><td>Sleep-time worker — BMRS pruning + mean-field + motif extraction; with <code>induce_edges=True</code>, induces edges for bulk-ingested isolated nodes.</td></tr>
+            <tr><td><code>stats()</code></td><td>Health snapshot: active nodes, active edges, audit entries.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">3.3</span>With BGE + OpenAI (production-grade)</h3>
+<pre><code>import os
+from recall import Memory, BGEEmbedder
+from recall.llm import OpenAIClient
+from recall.config import Config
+
+cfg = Config()
+cfg.THRESH_GAMMA = 0.005   # tighter Γ-edge threshold for noisy corpora
+cfg.THRESH_WALK  = -0.02
+
+mem = Memory(
+    tenant="prod_app",
+    storage="sqlite:///prod_recall.db",
+    embedder=BGEEmbedder("BAAI/bge-small-en-v1.5"),
+    llm=OpenAIClient(model="gpt-4o-mini", api_key=os.environ["OPENAI_API_KEY"]),
+    config=cfg,
+)
+
+# Observe
+mem.observe(
+    "Customer Acme signed a 3-year contract worth $4.2M starting Q3 2024.",
+    "Confirmed — added to CRM.",
+    scope={"team": "sales"},
+)
+
+# Bounded generate (hallucination bound enforced)
+gen = mem.bounded_generate("What is Acme's contract value?", scope={"team": "sales"}, bound="strict")
+print(gen.text)
+print(f"CRC bound: {gen.bound_value:.3f}")</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">3.4</span>Bulk-document ingest (RAG over a corpus)</h3>
+<pre><code>from recall import Memory, BGEEmbedder
+
+mem = Memory(tenant="docs", storage="sqlite:///docs_recall.db",
+             embedder=BGEEmbedder("BAAI/bge-small-en-v1.5"))
+
+with open("handbook.md") as f:
+    chunks = [p.strip() for p in f.read().split("\n\n") if len(p.strip()) > 40]
+
+# Fast path — no per-write edge induction
+mem.bulk_observe(chunks, scope={"doc": "handbook"})
+
+# Optional: induce Γ-edges offline
+mem.consolidate(induce_edges=True, induce_k=6)
+
+# Retrieve (auto-router will pick symmetric mode since the graph is sparse)
+result = mem.recall("what's our refund policy?", scope={"doc": "handbook"}, k=5)</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">3.5</span>Multi-tenant isolation</h3>
+        <p>Every <code>Memory(tenant="...")</code> is a hard boundary.
+          Cross-tenant reads are not possible from the public API.</p>
+<pre><code>alice = Memory(tenant="alice", storage="sqlite:///shared.db")
+bob   = Memory(tenant="bob",   storage="sqlite:///shared.db")
+
+alice.observe("my favorite color is blue", "")
+bob.recall("favorite color")        # returns nothing — bob can't see alice</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">3.6</span>Surgical forget + audit</h3>
+<pre><code>result = mem.recall("queue tech")
+node_to_forget = result.subgraph_nodes[0].id
+
+forget = mem.forget(node_to_forget, reason="user said outdated", actor="alice@co")
+print(f"deprecated 1 node, {len(forget.deprecated_edge_ids)} cascading edges")
+
+for entry in mem.audit.for_target(node_to_forget):
+    print(f"[{entry.timestamp}] {entry.operation} by {entry.actor}: {entry.reason}")</code></pre>
+        <div class="callout">
+          <strong>Note</strong>
+          The deprecated node + edges remain in storage (not deleted) but
+          are excluded from retrieval. The audit row is append-only and
+          exportable as JSONL.
+        </div>
+
+        <!-- 4. MCP server -->
+        <h2 id="mcp" class="reveal-up"><span class="h-num">04</span>MCP server</h2>
+        <p>For <strong>Claude Desktop, Cursor, Cline, Codex, Continue, Zed,
+          Windsurf</strong> — any MCP-aware client. Recall exposes 8 tools
+          the LLM can call directly.</p>
+
+        <h3 class="reveal-up"><span class="h-num">4.1</span>Install</h3>
+<pre><code>pip install "recall[mcp]"
+# Or with uvx (preferred — no local install):
+uvx --from recall recall-mcp --help</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">4.2</span>What tools the LLM gets</h3>
+        <table>
+          <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>add_memory</code></td><td>Write a memory (gated, dedup'd)</td></tr>
+            <tr><td><code>search_memory</code></td><td>Top-k connected nodes + edges</td></tr>
+            <tr><td><code>bounded_answer</code></td><td>Generate an answer, structurally bounded</td></tr>
+            <tr><td><code>forget</code></td><td>Surgical delete</td></tr>
+            <tr><td><code>audit</code></td><td>Provenance trail</td></tr>
+            <tr><td><code>graph_health</code></td><td>Spectral / curvature / persistence summary</td></tr>
+            <tr><td><code>consolidate</code></td><td>Run sleep-time consolidator</td></tr>
+            <tr><td><code>stats</code></td><td>Active nodes / edges / audit count</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">4.3</span>Configure your MCP client</h3>
+        <p>Pick your editor. Each tab shows the exact JSON to paste:</p>
+        <div class="tabs reveal-up" data-tabs>
+          <div class="tab-buttons">
+            <button class="tab-btn is-active" data-tab="claude">Claude Desktop</button>
+            <button class="tab-btn" data-tab="cursor">Cursor</button>
+            <button class="tab-btn" data-tab="cline">Cline</button>
+            <button class="tab-btn" data-tab="continue">Continue</button>
+            <button class="tab-btn" data-tab="zed">Zed</button>
+            <button class="tab-btn" data-tab="windsurf">Windsurf</button>
+            <button class="tab-btn" data-tab="codex">Codex CLI</button>
+          </div>
+
+          <div class="tab-panel is-active" data-tab="claude">
+            <p>Edit <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS)
+              or <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows):</p>
+<pre><code>{
+  "mcpServers": {
+    "recall": {
+      "command": "uvx",
+      "args": ["--from", "recall", "recall-mcp"],
+      "env": {
+        "RECALL_DB_DIR": "/Users/you/.recall"
+      }
+    }
+  }
+}</code></pre>
+            <p>Restart Claude Desktop fully (cmd+Q). The 8 Recall tools
+              appear in the tool picker.</p>
+            <p>If you installed locally instead of via uvx:</p>
+<pre><code>{
+  "mcpServers": {
+    "recall": {
+      "command": "python",
+      "args": ["-m", "recall.mcp_server"]
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="tab-panel" data-tab="cursor">
+            <p>Cursor reads MCP config from <code>~/.cursor/mcp.json</code>:</p>
+<pre><code>{
+  "mcpServers": {
+    "recall": {
+      "command": "uvx",
+      "args": ["--from", "recall", "recall-mcp"]
+    }
+  }
+}</code></pre>
+            <p>Restart Cursor. In Composer, the Recall tools become callable.</p>
+          </div>
+
+          <div class="tab-panel" data-tab="cline">
+            <p>Cline (VS Code extension) — settings JSON:</p>
+<pre><code>{
+  "cline.mcpServers": {
+    "recall": {
+      "command": "uvx",
+      "args": ["--from", "recall", "recall-mcp"]
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="tab-panel" data-tab="continue">
+            <p>Continue (VS Code / JetBrains): edit <code>~/.continue/config.json</code>:</p>
+<pre><code>{
+  "mcpServers": [
+    {
+      "name": "recall",
+      "command": "uvx",
+      "args": ["--from", "recall", "recall-mcp"]
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="tab-panel" data-tab="zed">
+            <p>Zed: edit <code>~/.config/zed/settings.json</code> or use the
+              in-editor MCP UI:</p>
+<pre><code>{
+  "mcp": {
+    "servers": {
+      "recall": {
+        "command": "uvx",
+        "args": ["--from", "recall", "recall-mcp"]
+      }
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="tab-panel" data-tab="windsurf">
+            <p>Windsurf: settings → MCP servers → add new:</p>
+<pre><code>command:  uvx
+args:     --from recall recall-mcp</code></pre>
+          </div>
+
+          <div class="tab-panel" data-tab="codex">
+<pre><code>claude mcp add recall -- uvx --from recall recall-mcp</code></pre>
+          </div>
+        </div>
+
+        <h3 class="reveal-up"><span class="h-num">4.4</span>Where the data lives</h3>
+        <p>By default <code>~/.recall/&lt;tenant&gt;.db</code> (SQLite).
+          Override with env var <code>RECALL_DB_DIR</code>. Each tenant gets
+          its own database file.</p>
+        <div class="callout tip">
+          <strong>Tip</strong>
+          The same database file can be inspected/modified with the regular
+          <code>recall</code> CLI (§5), the personal CLI (§6), or the
+          Python library — they're all the same SQLite schema.
+        </div>
+
+        <!-- 5. recall CLI -->
+        <h2 id="cli" class="reveal-up"><span class="h-num">05</span><code>recall</code> CLI</h2>
+        <p>For one-off scripted use. Installed via
+          <code>pip install recall</code> as the <code>recall</code> command.</p>
+
+        <h3 class="reveal-up"><span class="h-num">5.1</span>Subcommands</h3>
+<pre><code>recall ingest &lt;file&gt;         # ingest a text file (or stdin)
+recall inspect [--node ID]   # show stats / one node
+recall forget &lt;node_id&gt;      # forget a node (cascade edges, audit log)
+recall audit [--target ID]   # view audit log entries
+recall audit --export        # export full log as JSONL</code></pre>
+        <p>Common flags: <code>--tenant &lt;name&gt;</code> (default
+          <code>"default"</code>), <code>--db &lt;path&gt;</code> (default
+          <code>"./recall.db"</code>).</p>
+
+        <h3 class="reveal-up"><span class="h-num">5.2</span>Examples</h3>
+        <h4>Ingest a markdown file with a project scope:</h4>
+<pre><code>recall --tenant alice --db ~/recall.db ingest README.md \
+  --scope '{"project": "infra"}'</code></pre>
+
+        <h4>Pipe arbitrary text in:</h4>
+<pre><code>echo "We adopted Bun 1.1.4 for the monorepo." | \
+  recall --tenant alice --db ~/recall.db ingest \
+  --scope '{"project": "platform"}'</code></pre>
+
+        <h4>Inspect one node:</h4>
+<pre><code>recall --db ~/recall.db inspect --node abc1234567...</code></pre>
+
+        <h4>Forget with a reason:</h4>
+<pre><code>recall --db ~/recall.db forget abc1234... --reason "user said outdated"</code></pre>
+
+        <h4>Export the full audit log as JSONL:</h4>
+<pre><code>recall --db ~/recall.db audit --export &gt; audit.jsonl</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">5.3</span>Combining with shell tools</h3>
+        <h4>Bulk-ingest a directory of markdown notes:</h4>
+<pre><code>find ~/notes -name "*.md" -exec sh -c '
+  recall --tenant me --db ~/.recall/me.db ingest "$1" \
+    --scope "{\"file\": \"$(basename "$1")\"}"
+' _ {} \;</code></pre>
+
+        <!-- 6. recall me -->
+        <h2 id="me" class="reveal-up"><span class="h-num">06</span><code>recall me</code> personal CLI</h2>
+        <p>A purpose-built CLI for using Recall as a personal knowledge
+          graph — the "second brain" use case. Stores at
+          <code>~/.recall/personal.db</code> by default.</p>
+
+        <h3 class="reveal-up"><span class="h-num">6.1</span>Subcommands</h3>
+<pre><code>recall me add "..."                    # add a memory
+recall me ask "..."                    # search / query
+recall me ask "..." --bounded          # generate bounded answer (needs LLM)
+recall me trace                        # show audit log
+recall me forget &lt;node_id&gt;             # delete a memory
+recall me health                       # graph health (spectral, topology, curvature)
+recall me consolidate                  # run sleep-time consolidator
+recall me ingest &lt;file_or_dir&gt;         # bulk-ingest .md / .txt / .org files</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">6.2</span>Walkthrough</h3>
+<pre><code># Add a few memories
+recall me add "decided to use Postgres LISTEN/NOTIFY for the queue"
+recall me add "switched to Redis Streams after we hit message loss" --tag queue
+recall me add "Bun 1.1.4 is the monorepo's package manager" --tag stack
+
+# Ask a question — graph-walk retrieval
+recall me ask "what queue tech are we using?"
+# # 4 memories, 3 connections
+#   [decision] switched to Redis Streams after we hit message loss
+#   [pivot]    decided to use Postgres LISTEN/NOTIFY for the queue
+#   ...
+
+# Bounded answer with a real LLM (set OPENAI_API_KEY first)
+recall me ask "what queue tech and why?" --bounded
+# Redis Streams. We adopted it after Postgres LISTEN/NOTIFY caused message
+# loss under load.
+# (hallucination bound: 0.187)
+
+# Audit log
+recall me trace --limit 10
+
+# Memory health — spectral, topology, curvature
+recall me health
+# === Memory health ===
+#   nodes: 14
+#   edges: 22
+#   density: 1.57
+# === Connectivity (spectral) ===
+#   λ_2 (spectral gap): 0.4218
+#   ...
+
+# Run sleep-time consolidation
+recall me consolidate --budget 20
+
+# Bulk-ingest a notes directory
+recall me ingest ~/notes/
+# ingested 312 memories from 47 file(s)</code></pre>
+
+        <div class="callout">
+          <strong>Bounded vs un-bounded <code>ask</code></strong>
+          Without <code>--bounded</code>, <code>ask</code> returns the
+          retrieved subgraph. With <code>--bounded</code>, it adds an LLM
+          call that <em>only sees</em> the retrieved subgraph and refuses
+          (or flags) any claim not structurally supported. The bound value
+          is printed below the answer. For <code>--bounded</code> to work
+          you need an LLM client configured (set <code>OPENAI_API_KEY</code>).
+        </div>
+
+        <!-- 7. Server -->
+        <h2 id="server" class="reveal-up"><span class="h-num">07</span>Self-hosted HTTP server</h2>
+        <p>For team deployments where you want a service exposing Recall
+          over REST.</p>
+
+        <h3 class="reveal-up"><span class="h-num">7.1</span>Install + run</h3>
+<pre><code>pip install "recall[server]"
+uvicorn recall.server:app --host 0.0.0.0 --port 8765</code></pre>
+        <p>Database directory defaults to <code>./recall_data/</code>.
+          Override with <code>RECALL_DB_DIR=/var/lib/recall</code>.</p>
+
+        <h3 class="reveal-up"><span class="h-num">7.2</span>Endpoints</h3>
+        <table>
+          <thead><tr><th>Method</th><th>Path</th><th>Body</th></tr></thead>
+          <tbody>
+            <tr><td><code>POST</code></td><td><code>/v1/memory/observe</code></td><td><code>{tenant, user_msg, agent_msg, scope?, source?}</code></td></tr>
+            <tr><td><code>POST</code></td><td><code>/v1/memory/recall</code></td><td><code>{tenant, query, scope?, mode?, k?, depth?}</code></td></tr>
+            <tr><td><code>POST</code></td><td><code>/v1/memory/bounded_generate</code></td><td><code>{tenant, query, scope?, bound?, k?, depth?}</code></td></tr>
+            <tr><td><code>POST</code></td><td><code>/v1/memory/forget</code></td><td><code>{tenant, node_id, reason?, actor?}</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/v1/memory/audit</code></td><td>?tenant=…&target=…&limit=…</td></tr>
+            <tr><td><code>GET</code></td><td><code>/v1/memory/stats</code></td><td>?tenant=…</td></tr>
+            <tr><td><code>POST</code></td><td><code>/v1/memory/consolidate</code></td><td>?tenant=…&budget=…</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">7.3</span>Curl examples</h3>
+        <h4>Observe:</h4>
+<pre><code>curl -sX POST localhost:8765/v1/memory/observe \
+  -H 'Content-Type: application/json' \
+  -d '{"tenant":"alice","user_msg":"we use Redis Streams","agent_msg":"OK","scope":{"project":"infra"}}'</code></pre>
+
+        <h4>Recall:</h4>
+<pre><code>curl -sX POST localhost:8765/v1/memory/recall \
+  -H 'Content-Type: application/json' \
+  -d '{"tenant":"alice","query":"queue tech","mode":"auto","k":5}' | jq</code></pre>
+
+        <h4>Bounded generate:</h4>
+<pre><code>curl -sX POST localhost:8765/v1/memory/bounded_generate \
+  -H 'Content-Type: application/json' \
+  -d '{"tenant":"alice","query":"what queue tech?","bound":"soft"}' | jq</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">7.4</span>Docker compose</h3>
+<pre><code># docker-compose.yml
+version: "3.8"
+services:
+  recall:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+      - recall-data:/var/lib/recall
+    environment:
+      RECALL_DB_DIR: /var/lib/recall
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports: ["8765:8765"]
+    command: &gt;
+      sh -c 'pip install "recall[server,embed-bge,llm-openai]" &amp;&amp;
+             uvicorn recall.server:app --host 0.0.0.0 --port 8765'
+volumes:
+  recall-data:</code></pre>
+<pre><code>docker compose up</code></pre>
+
+        <!-- 8. Examples -->
+        <h2 id="examples" class="reveal-up"><span class="h-num">08</span>Examples + benchmarks</h2>
+
+        <h3 class="reveal-up"><span class="h-num">8.1</span>Examples (run directly)</h3>
+<pre><code>git clone https://github.com/yash194/recall.git
+cd recall
+pip install -e ".[embed-bge]"
+
+# Quickstart — three observe + recall + bounded_generate
+PYTHONPATH=src python examples/quickstart.py
+
+# Full demo with all features
+PYTHONPATH=src python examples/full_demo.py
+
+# Real-LLM demo (needs OPENAI_API_KEY)
+PYTHONPATH=src python examples/real_llm_demo.py</code></pre>
+
+        <h3 class="reveal-up"><span class="h-num">8.2</span>Run a benchmark</h3>
+<pre><code>PYTHONPATH=src python benchmarks/longmemeval/run.py --n 30 --systems bm25 cosine recall
+PYTHONPATH=src python benchmarks/scale_stress/run.py --max-n 5000
+PYTHONPATH=src python benchmarks/synthetic_gamma/run.py</code></pre>
+        <p>JSON results in <code>benchmarks/&lt;name&gt;/results/</code>.
+          PNG charts via:</p>
+<pre><code>PYTHONPATH=src python benchmarks/visualize.py</code></pre>
+        <p>Full methodology + numbers in
+          <a href="https://github.com/yash194/recall/blob/main/docs/BENCHMARKS.md">docs/BENCHMARKS.md</a>.</p>
+
+        <!-- 9. Recipes -->
+        <h2 id="recipes" class="reveal-up"><span class="h-num">09</span>Common recipes</h2>
+
+        <div class="recipe reveal-up">
+          <h4>9.1 Conversation memory for a chat agent</h4>
+          <p>Use one tenant per user. Observe every turn; recall before each
+            response.</p>
+<pre><code>mem = Memory(tenant=user_id, storage=f"sqlite:///agents/{user_id}.db",
+             embedder=BGEEmbedder())
+
+# At every turn:
+mem.observe(user_message, agent_reply, scope={"session": session_id})
+
+# When the agent needs context:
+ctx = mem.recall(user_message, scope={"session": session_id}, mode="auto")
+context_text = "\n".join(n.text for n in ctx.subgraph_nodes)
+# Pass context_text to your prompt template.</code></pre>
+        </div>
+
+        <div class="recipe reveal-up">
+          <h4>9.2 RAG over a document corpus</h4>
+          <p>Bulk-ingest once, then optionally consolidate to add edges.</p>
+<pre><code>mem = Memory(tenant="docs", storage="sqlite:///docs.db", embedder=BGEEmbedder())
+
+chunks = chunk_documents("./corpus")  # your chunking
+mem.bulk_observe(chunks, scope={"corpus": "v1"})
+mem.consolidate(induce_edges=True)     # offline edge induction
+
+# Auto-router picks symmetric for factual lookup
+result = mem.recall(query, scope={"corpus": "v1"}, k=5)
+
+# Or with a hallucination bound:
+gen = mem.bounded_generate(query, scope={"corpus": "v1"}, bound="strict")</code></pre>
+        </div>
+
+        <div class="recipe reveal-up">
+          <h4>9.3 Multi-tenant SaaS</h4>
+<pre><code>def memory_for(user_id: str) -&gt; Memory:
+    return Memory(
+        tenant=user_id,
+        storage="sqlite:///shared.db",  # one file, scoped by tenant column
+        embedder=BGEEmbedder(),
+    )
+
+# Per-request:
+mem = memory_for(request.user_id)
+mem.observe(...)</code></pre>
+        </div>
+
+        <div class="recipe reveal-up">
+          <h4>9.4 Auditable agent action trail</h4>
+          <p>For compliance / explainability: store the full trace next to
+            every generated answer.</p>
+<pre><code>gen = mem.bounded_generate(query, bound="strict")
+trace = mem.trace(gen)
+
+trace_json = json.dumps({
+    "answer": gen.text,
+    "bound": gen.bound_value,
+    "flagged": gen.flagged_claims,
+    "audit": [{"op": e.operation, "ts": str(e.timestamp), "target": e.target_id}
+              for e in trace.audit_entries],
+}, indent=2)</code></pre>
+        </div>
+
+        <div class="recipe reveal-up">
+          <h4>9.5 Personal knowledge graph synced across devices</h4>
+<pre><code># On both machines
+pip install recall
+
+# Sync ~/.recall/personal.db with Syncthing / Resilio / Dropbox.
+# SQLite is single-writer, so make sure only one device is writing
+# at a time (or run the HTTP server on a home server).
+
+RECALL_DB_DIR=/srv/recall uvicorn recall.server:app --port 8765</code></pre>
+        </div>
+
+        <!-- 10. Configuration -->
+        <h2 id="config" class="reveal-up"><span class="h-num">10</span>Configuration</h2>
+
+        <h3 class="reveal-up"><span class="h-num">10.1</span>Environment variables</h3>
+        <table>
+          <thead><tr><th>Var</th><th>Effect</th><th>Default</th></tr></thead>
+          <tbody>
+            <tr><td><code>RECALL_DB_DIR</code></td><td>DB directory for MCP / HTTP server</td><td><code>~/.recall</code> (MCP) · <code>./recall_data</code> (HTTP)</td></tr>
+            <tr><td><code>OPENAI_API_KEY</code></td><td>Used by <code>OpenAIClient</code></td><td>none</td></tr>
+            <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Used by Anthropic LLM client (planned)</td><td>none</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">10.2</span>Tunable thresholds</h3>
+<pre><code>from recall.config import Config
+cfg = Config()
+cfg.THRESH_QUALITY = 0.4         # quality gate (0–1)
+cfg.THRESH_GAMMA   = 0.05        # min |Γ| for edge creation
+cfg.THRESH_WALK    = -0.10       # min weight for walk traversal
+cfg.K_NEIGHBORS    = 10          # top-k neighbors at write
+cfg.DELTA          = 0.05        # PAC-Bayes / CRC confidence
+cfg.BUDGET_SUBGRAPH = 10.0       # PCST budget
+mem = Memory(tenant="t", config=cfg)</code></pre>
+        <p>Defaults are calibrated for general-purpose conversational
+          memory. For dense reference corpora, lower
+          <code>THRESH_GAMMA</code> to <code>0.005</code>. For ultra-noisy
+          chat logs, raise <code>THRESH_QUALITY</code> to <code>0.6</code>.</p>
+
+        <h3 class="reveal-up"><span class="h-num">10.3</span>Picking an embedder</h3>
+        <table>
+          <thead><tr><th>Embedder</th><th>When to use</th></tr></thead>
+          <tbody>
+            <tr><td><code>HashEmbedder</code></td><td>Tests, deterministic, zero-dep. Default if no embedder is provided.</td></tr>
+            <tr><td><code>TfidfEmbedder</code></td><td>No torch / transformers needed. Real lexical-semantic embeddings via char-ngram TF-IDF.</td></tr>
+            <tr><td><code>BGEEmbedder("BAAI/bge-small-en-v1.5")</code></td><td>The benchmark choice. 384-dim, CPU-friendly.</td></tr>
+            <tr><td><code>BGEEmbedder("BAAI/bge-large-en-v1.5")</code></td><td>Higher quality, slower.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="reveal-up"><span class="h-num">10.4</span>Picking a retrieval mode</h3>
+<pre><code>mem.recall(query, mode="auto")        # let the router decide (default)
+mem.recall(query, mode="symmetric")   # cosine over s, no walk
+mem.recall(query, mode="path")        # Γ-walk + PCST
+mem.recall(query, mode="hybrid")      # both, fused via reciprocal rank</code></pre>
+        <div class="callout tip">
+          <strong>Tip</strong>
+          <code>auto</code> is correct for ~90 % of use cases. Force
+          <code>path</code> only when you know the data has connected
+          reasoning structure (causal chains, decisions, debate transcripts).
+        </div>
+
+        <!-- 11. Troubleshooting -->
+        <h2 id="troubleshooting" class="reveal-up"><span class="h-num">11</span>Troubleshooting</h2>
+
+        <h3 class="reveal-up">"ImportError: BGEEmbedder requires …"</h3>
+<pre><code>pip install "recall[embed-bge]"</code></pre>
+
+        <h3 class="reveal-up">"ImportError: MCP server requires …"</h3>
+<pre><code>pip install "recall[mcp]"</code></pre>
+
+        <h3 class="reveal-up">MCP tools don't show up in Claude Desktop</h3>
+        <ol>
+          <li>Check the config file path is correct (macOS:
+            <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>).</li>
+          <li>Run <code>uvx --from recall recall-mcp --help</code> in a
+            terminal — it should print the help. If it errors, install with
+            <code>pip install "recall[mcp]"</code>.</li>
+          <li>Fully quit Claude Desktop (cmd+Q) and restart. A reload from
+            the menu doesn't pick up new MCP servers.</li>
+          <li>Check Console.app /
+            <code>~/Library/Logs/Claude/</code> for MCP startup errors.</li>
+        </ol>
+
+        <h3 class="reveal-up">Recall returns empty results</h3>
+<pre><code>print(mem.stats())
+# {'active_nodes': 0, ...} → quality gate rejected everything.</code></pre>
+        <p>Either:</p>
+        <ul>
+          <li>Your text matched a <code>QUALITY_NEGATIVE_TEMPLATES</code>
+            pattern (boilerplate / system-prompt leak / hallucinated
+            profile). Inspect with <code>mem.audit.since(...)</code> —
+            rejection reasons are in the <code>payload</code>.</li>
+          <li>The scope you queried doesn't match any stored scope. v0.5
+            fixed exact-match → subset semantics; if you're on an older
+            version, upgrade.</li>
+        </ul>
+
+        <h3 class="reveal-up">Latency climbs above 1K nodes</h3>
+        <p>You're probably on a pre-v0.5 install. Upgrade:</p>
+<pre><code>pip install --upgrade recall</code></pre>
+        <p>v0.5 introduced the vectorized embedding cache; v0.6 added the
+          adjacency cache. Together they keep p50 retrieval in the 10–25 ms
+          band through N = 5 000.</p>
+
+        <h3 class="reveal-up"><code>bounded_generate</code> raises <code>HallucinationBlocked</code></h3>
+        <p>Working as designed. The LLM's output contained a claim with no
+          structural support in the retrieved subgraph. Either:</p>
+        <ul>
+          <li>The subgraph is too narrow — increase <code>k</code>, expand
+            <code>scope</code>, or run
+            <code>consolidate(induce_edges=True)</code> to add edges.</li>
+          <li>Use <code>bound="soft"</code> to flag instead of raise.</li>
+          <li>Use <code>bound="off"</code> to skip the check entirely (not
+            recommended).</li>
+        </ul>
+
+        <h3 class="reveal-up">Where do I see the audit log?</h3>
+<pre><code>for e in mem.audit.since(datetime.fromisoformat("2026-05-01")):
+    print(e)
+# Or export to JSONL:
+print(mem.audit.export_jsonl())</code></pre>
+        <p>From the CLI:</p>
+<pre><code>recall --db ./recall.db audit
+recall --db ./recall.db audit --export &gt; audit.jsonl</code></pre>
+
+        <!-- Final CTA -->
+        <div class="usage-cta reveal-up">
+          <h3>Ready to ship?</h3>
+          <p>The 154-test suite passes in 1.6 s on a laptop. The benchmark
+            sweep finishes in under an hour. Apache-2.0 forever.</p>
+          <a class="btn btn-primary" href="https://github.com/yash194/recall">View on GitHub</a>
+          <a class="btn btn-ghost" href="index.html#install">Install paths</a>
+        </div>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <span class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Recall</span>
+      </span>
+      <p class="footer-tagline">Memory layer for AI agents. Math-first, OSS-forever.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="index.html">Home</a>
+      <a href="usage.html">Usage</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/MATH.md">Math</a>
+      <a href="https://github.com/yash194/recall/blob/main/docs/BENCHMARKS.md">Benchmarks</a>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <a href="https://github.com/yash194/recall/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/yash194/recall/blob/main/GOVERNANCE.md">Governance</a>
+      <a href="https://github.com/yash194/recall/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/yash194/recall/issues">Issues</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://github.com/yash194/recall/blob/main/LICENSE">Apache-2.0</a>
+      <a href="https://github.com/yash194/recall/blob/main/NOTICE">NOTICE</a>
+      <a href="https://github.com/yash194/recall/blob/main/CITATIONS.bib">Cite</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Recall maintainers · Apache License 2.0</span>
+    <span>Made with care, math, and citations.</span>
+  </div>
+</footer>
+
+<script src="usage.js"></script>
+</body>
+</html>

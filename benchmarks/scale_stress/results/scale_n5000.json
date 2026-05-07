@@ -1,0 +1,112 @@
+{
+  "recall": {
+    "system": "Recall (BGE + bulk)",
+    "measurements": [
+      {
+        "milestone": "100",
+        "gold_recall_at_k": 1.0,
+        "active_size": 100,
+        "latency_p50_ms": 20.64204216003418,
+        "latency_p99_ms": 36.62705421447754,
+        "latency_mean_ms": 18.03920269012451,
+        "target": 100,
+        "distractors_added": 90
+      },
+      {
+        "milestone": "500",
+        "gold_recall_at_k": 0.8,
+        "active_size": 500,
+        "latency_p50_ms": 7.75599479675293,
+        "latency_p99_ms": 9.592056274414062,
+        "latency_mean_ms": 7.576775550842285,
+        "target": 500,
+        "distractors_added": 490
+      },
+      {
+        "milestone": "1000",
+        "gold_recall_at_k": 0.8,
+        "active_size": 1000,
+        "latency_p50_ms": 8.21995735168457,
+        "latency_p99_ms": 9.821891784667969,
+        "latency_mean_ms": 8.199191093444824,
+        "target": 1000,
+        "distractors_added": 990
+      },
+      {
+        "milestone": "2500",
+        "gold_recall_at_k": 0.8,
+        "active_size": 2500,
+        "latency_p50_ms": 8.964061737060547,
+        "latency_p99_ms": 12.588977813720703,
+        "latency_mean_ms": 9.323453903198242,
+        "target": 2500,
+        "distractors_added": 2490
+      },
+      {
+        "milestone": "5000",
+        "gold_recall_at_k": 0.8,
+        "active_size": 5000,
+        "latency_p50_ms": 11.298179626464844,
+        "latency_p99_ms": 16.21389389038086,
+        "latency_mean_ms": 11.723804473876953,
+        "target": 5000,
+        "distractors_added": 4990
+      }
+    ]
+  },
+  "cosine": {
+    "system": "Cosine RAG (BGE-small)",
+    "measurements": [
+      {
+        "milestone": "100",
+        "gold_recall_at_k": 1.0,
+        "active_size": 100,
+        "latency_p50_ms": 10.924816131591797,
+        "latency_p99_ms": 12.450933456420898,
+        "latency_mean_ms": 10.743069648742676,
+        "target": 100,
+        "distractors_added": 90
+      },
+      {
+        "milestone": "500",
+        "gold_recall_at_k": 0.8,
+        "active_size": 500,
+        "latency_p50_ms": 10.999917984008789,
+        "latency_p99_ms": 13.399124145507812,
+        "latency_mean_ms": 10.477590560913086,
+        "target": 500,
+        "distractors_added": 490
+      },
+      {
+        "milestone": "1000",
+        "gold_recall_at_k": 0.8,
+        "active_size": 1000,
+        "latency_p50_ms": 9.553909301757812,
+        "latency_p99_ms": 11.45792007446289,
+        "latency_mean_ms": 9.688615798950195,
+        "target": 1000,
+        "distractors_added": 990
+      },
+      {
+        "milestone": "2500",
+        "gold_recall_at_k": 0.8,
+        "active_size": 2500,
+        "latency_p50_ms": 10.923147201538086,
+        "latency_p99_ms": 15.449047088623047,
+        "latency_mean_ms": 11.33430004119873,
+        "target": 2500,
+        "distractors_added": 2490
+      },
+      {
+        "milestone": "5000",
+        "gold_recall_at_k": 0.8,
+        "active_size": 5000,
+        "latency_p50_ms": 14.230966567993164,
+        "latency_p99_ms": 15.949010848999023,
+        "latency_mean_ms": 13.666462898254395,
+        "target": 5000,
+        "distractors_added": 4990
+      }
+    ]
+  }
+}

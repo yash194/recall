@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "recall"
+version = "0.1.0"
+description = "Memory layer for AI agents — typed-edge graph, bounded hallucination, audit-grade, surgically forgettable. Local SQLite + MCP server."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Yash Aggarwal" }]
+keywords = [
+    "ai", "memory", "rag", "knowledge-graph", "llm-agents",
+    "mcp", "agent-memory", "typed-edges", "hallucination-bound",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "scikit-learn>=1.3",  # used by TfidfEmbedder + structural-support check
+    # SQLite is stdlib.
+    # Heavy optional deps (torch, sentence-transformers, gudhi, etc.) are extras.
+]
+
+[project.optional-dependencies]
+embed-bge = ["sentence-transformers>=2.2", "torch>=2.0"]
+llm-openai = ["openai>=1.0"]
+llm-anthropic = ["anthropic>=0.20"]
+mcp = ["mcp>=1.0"]
+graph = ["scipy>=1.10", "networkx>=3.0", "POT>=0.9", "gudhi>=3.8"]
+server = ["fastapi>=0.100", "uvicorn>=0.23", "pydantic>=2.0"]
+test = ["pytest>=7.0", "pytest-cov", "hypothesis>=6.0"]
+dev = ["recall[test,mcp,graph,server,llm-openai]", "ruff", "mypy"]
+
+[project.scripts]
+recall = "recall.cli:main"
+recall-me = "recall.personal:main"
+recall-mcp = "recall.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/yash194/recall"
+Repository = "https://github.com/yash194/recall"
+Documentation = "https://github.com/yash194/recall/tree/main/docs"
+Issues = "https://github.com/yash194/recall/issues"
+Changelog = "https://github.com/yash194/recall/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+recall = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

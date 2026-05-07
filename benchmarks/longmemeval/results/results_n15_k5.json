@@ -1,0 +1,438 @@
+{
+  "summary": {
+    "bm25": {
+      "n_evaluated": 15,
+      "recall_at_k": 1.0,
+      "mrr": 0.9222222222222223,
+      "latency_p50_ms": 5.505084991455078,
+      "latency_p99_ms": 6.4239501953125
+    },
+    "cosine": {
+      "n_evaluated": 15,
+      "recall_at_k": 0.6666666666666666,
+      "mrr": 0.5333333333333333,
+      "latency_p50_ms": 12.119054794311523,
+      "latency_p99_ms": 376.41429901123047
+    },
+    "recall": {
+      "n_evaluated": 15,
+      "recall_at_k": 0.0,
+      "mrr": 0.0,
+      "latency_p50_ms": 381.95204734802246,
+      "latency_p99_ms": 558.9802265167236
+    }
+  },
+  "raw": {
+    "bm25": [
+      {
+        "qid": "e47becba",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "latency_sec": 0.0064239501953125
+      },
+      {
+        "qid": "118b2229",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005553245544433594
+      },
+      {
+        "qid": "51a45a95",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005505084991455078
+      },
+      {
+        "qid": "58bf7951",
+        "qtype": "single-session-user",
+        "n_sessions": 57,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.0058879852294921875
+      },
+      {
+        "qid": "1e043500",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005536079406738281
+      },
+      {
+        "qid": "c5e8278d",
+        "qtype": "single-session-user",
+        "n_sessions": 44,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.004909992218017578
+      },
+      {
+        "qid": "6ade9755",
+        "qtype": "single-session-user",
+        "n_sessions": 51,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005579948425292969
+      },
+      {
+        "qid": "6f9b354f",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005471944808959961
+      },
+      {
+        "qid": "58ef2f1c",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.00556182861328125
+      },
+      {
+        "qid": "f8c5f88b",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005212306976318359
+      },
+      {
+        "qid": "5d3d2817",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.3333333333333333,
+        "latency_sec": 0.005527973175048828
+      },
+      {
+        "qid": "7527f7e2",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.0051310062408447266
+      },
+      {
+        "qid": "c960da58",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005250692367553711
+      },
+      {
+        "qid": "3b6f954b",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005496978759765625
+      },
+      {
+        "qid": "726462e0",
+        "qtype": "single-session-user",
+        "n_sessions": 48,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.005486965179443359
+      }
+    ],
+    "cosine": [
+      {
+        "qid": "e47becba",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.3033740520477295
+      },
+      {
+        "qid": "118b2229",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.2984919548034668
+      },
+      {
+        "qid": "51a45a95",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.0199129581451416
+      },
+      {
+        "qid": "58bf7951",
+        "qtype": "single-session-user",
+        "n_sessions": 57,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.3171079158782959
+      },
+      {
+        "qid": "1e043500",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.10546684265136719
+      },
+      {
+        "qid": "c5e8278d",
+        "qtype": "single-session-user",
+        "n_sessions": 44,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.008949041366577148
+      },
+      {
+        "qid": "6ade9755",
+        "qtype": "single-session-user",
+        "n_sessions": 51,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.009722232818603516
+      },
+      {
+        "qid": "6f9b354f",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "latency_sec": 0.008517980575561523
+      },
+      {
+        "qid": "58ef2f1c",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "latency_sec": 0.014045953750610352
+      },
+      {
+        "qid": "f8c5f88b",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "latency_sec": 0.01117396354675293
+      },
+      {
+        "qid": "5d3d2817",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.37641429901123047
+      },
+      {
+        "qid": "7527f7e2",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.006865024566650391
+      },
+      {
+        "qid": "c960da58",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "latency_sec": 0.009391069412231445
+      },
+      {
+        "qid": "3b6f954b",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "latency_sec": 0.012119054794311523
+      },
+      {
+        "qid": "726462e0",
+        "qtype": "single-session-user",
+        "n_sessions": 48,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.008603096008300781
+      }
+    ],
+    "recall": [
+      {
+        "qid": "e47becba",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.17783188819885254
+      },
+      {
+        "qid": "118b2229",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.15776896476745605
+      },
+      {
+        "qid": "51a45a95",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.36012792587280273
+      },
+      {
+        "qid": "58bf7951",
+        "qtype": "single-session-user",
+        "n_sessions": 57,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.38195204734802246
+      },
+      {
+        "qid": "1e043500",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.4042990207672119
+      },
+      {
+        "qid": "c5e8278d",
+        "qtype": "single-session-user",
+        "n_sessions": 44,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.14241719245910645
+      },
+      {
+        "qid": "6ade9755",
+        "qtype": "single-session-user",
+        "n_sessions": 51,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.5589802265167236
+      },
+      {
+        "qid": "6f9b354f",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.4167640209197998
+      },
+      {
+        "qid": "58ef2f1c",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.1649479866027832
+      },
+      {
+        "qid": "f8c5f88b",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.44866204261779785
+      },
+      {
+        "qid": "5d3d2817",
+        "qtype": "single-session-user",
+        "n_sessions": 53,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.40106201171875
+      },
+      {
+        "qid": "7527f7e2",
+        "qtype": "single-session-user",
+        "n_sessions": 45,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.42773985862731934
+      },
+      {
+        "qid": "c960da58",
+        "qtype": "single-session-user",
+        "n_sessions": 46,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.14307785034179688
+      },
+      {
+        "qid": "3b6f954b",
+        "qtype": "single-session-user",
+        "n_sessions": 50,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.42296600341796875
+      },
+      {
+        "qid": "726462e0",
+        "qtype": "single-session-user",
+        "n_sessions": 48,
+        "n_gold": 1,
+        "recall_at_k": 0.0,
+        "mrr": 0.0,
+        "latency_sec": 0.30489277839660645
+      }
+    ]
+  }
+}
