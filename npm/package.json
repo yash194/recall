@@ -1,7 +1,7 @@
 {
-  "name": "recall-mcp",
+  "name": "typed-recall",
   "version": "0.1.0",
-  "description": "Recall MCP server — typed-edge memory for AI agents (Claude Code / Codex / Cursor / Windsurf). Wrapper that runs the Python MCP server via uvx.",
+  "description": "Recall — typed-edge memory MCP server for AI agents (Claude Code / Codex / Cursor / Windsurf). Wrapper that runs the Python MCP server via uvx.",
   "keywords": [
     "mcp",
     "ai",
@@ -25,7 +25,8 @@
   "author": "Yash Aggarwal",
   "type": "module",
   "bin": {
-    "recall-mcp": "bin/recall-mcp.js"
+    "recall-mcp": "bin/recall-mcp.js",
+    "typed-recall": "bin/recall-mcp.js"
   },
   "files": [
     "bin/",

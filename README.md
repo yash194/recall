@@ -11,7 +11,7 @@
 [![Math: research-backed](https://img.shields.io/badge/math-research--backed-aubergine.svg)](#research-foundations)
 
 ```bash
-pip install recall
+pip install typed-recall
 ```
 
 </div>
@@ -228,10 +228,10 @@ Full derivations in [`docs/MATH.md`](docs/MATH.md).
 ### As a Python library
 
 ```bash
-pip install recall                              # core
-pip install recall[embed-bge,llm-openai]        # neural embedder + OpenAI
-pip install recall[graph,server,mcp]            # full graph math + HTTP + MCP
-pip install recall[dev]                         # everything, for development
+pip install typed-recall                              # core
+pip install typed-recall[embed-bge,llm-openai]        # neural embedder + OpenAI
+pip install typed-recall[graph,server,mcp]            # full graph math + HTTP + MCP
+pip install typed-recall[dev]                         # everything, for development
 ```
 
 ### As an MCP server (Claude Desktop / Cursor / Cline / Codex / Continue)

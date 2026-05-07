@@ -95,7 +95,7 @@ curl -s -o /dev/null -w "GitHub user: HTTP %{http_code}\n" https://api.github.co
 PyPI names are first-come-first-served and can't be transferred without good cause. Alternatives in order of preference:
 
 1. `recall-ai` — most common AI-product naming convention
-2. `recall-memory` — descriptive
+2. `typed-recall` — descriptive
 3. `recallkit` — implies a toolkit
 4. `pyrecall` — `py` prefix is fine but slightly old-fashioned
 5. `recall-mem` — short, distinctive
@@ -358,7 +358,7 @@ The package is now public. **Anyone in the world can run `pip install recall`.**
 In a fresh shell on a different machine if possible:
 
 ```bash
-pip install recall
+pip install typed-recall
 python -c "from recall import Memory; print(Memory)"
 ```
 
@@ -664,7 +664,7 @@ PyPI launch
 □  TestPyPI: twine upload --repository testpypi dist/*
 □  Verify install from TestPyPI in a fresh venv
 □  Real PyPI: twine upload dist/*
-□  Verify install:  pip install recall
+□  Verify install:  pip install typed-recall
 □  Set up Trusted Publisher OIDC at pypi.org/manage/.../publishing/
 □  Bump version in pyproject.toml
 □  Tag and push:   git tag v0.4.1 && git push --tags

@@ -3,10 +3,10 @@
  * recall-mcp — npm shim that runs the Python Recall MCP server.
  *
  * Strategy:
- *   1. Try `uvx --from recall recall-mcp` (uv-managed, no global install needed).
- *   2. If uvx is not available, fall back to `pipx run --spec recall recall-mcp`.
+ *   1. Try `uvx --from typed-recall recall-mcp` (uv-managed, no global install needed).
+ *   2. If uvx is not available, fall back to `pipx run --spec typed-recall recall-mcp`.
  *   3. If neither, fall back to `python3 -m recall.mcp_server` (assumes
- *      `pip install recall[mcp]` was already done).
+ *      `pip install typed-recall[mcp]` was already done).
  *
  * The shim is a transparent stdio passthrough — it forwards stdin/stdout/stderr
  * and propagates the exit code so MCP clients (Claude Code, Codex, Cursor,
@@ -45,14 +45,14 @@ function resolveCommand() {
   if (which("uvx")) {
     return {
       cmd: "uvx",
-      args: ["--from", "recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
+      args: ["--from", "typed-recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
       via: "uvx",
     };
   }
   if (which("pipx")) {
     return {
       cmd: "pipx",
-      args: ["run", "--spec", "recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
+      args: ["run", "--spec", "typed-recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
       via: "pipx",
     };
   }
@@ -84,7 +84,7 @@ child.on("error", (err) => {
       `[recall-mcp] ERROR: \`${cmd}\` not found. Install one of:\n` +
         `  - uv (recommended):  curl -LsSf https://astral.sh/uv/install.sh | sh\n` +
         `  - pipx:              python3 -m pip install --user pipx && pipx ensurepath\n` +
-        `  - or: pip install 'recall[mcp,embed-bge,llm-openai]'\n`,
+        `  - or: pip install 'typed-recall[mcp,embed-bge,llm-openai]'\n`,
     );
   } else {
     process.stderr.write(`[recall-mcp] spawn error: ${err.message}\n`);

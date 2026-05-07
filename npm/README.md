@@ -1,4 +1,4 @@
-# recall-mcp
+# typed-recall
 
 > The npm wrapper for [Recall](https://github.com/yash194/recall) — a typed-edge memory MCP server for AI agents (Claude Code / Codex / Cursor / Windsurf).
 
@@ -12,7 +12,7 @@ single command.
 ### Claude Code
 
 ```bash
-claude mcp add recall -- npx -y recall-mcp
+claude mcp add recall -- npx -y typed-recall
 ```
 
 ### Cursor / Windsurf / VS Code MCP
@@ -24,7 +24,7 @@ In your client's MCP config:
   "mcpServers": {
     "recall": {
       "command": "npx",
-      "args": ["-y", "recall-mcp"]
+      "args": ["-y", "typed-recall"]
     }
   }
 }
@@ -37,27 +37,27 @@ In `~/.codex/config.toml`:
 ```toml
 [mcp_servers.recall]
 command = "npx"
-args = ["-y", "recall-mcp"]
+args = ["-y", "typed-recall"]
 ```
 
 ### Standalone
 
 ```bash
-npm install -g recall-mcp
-recall-mcp
+npm install -g typed-recall
+typed-recall
 ```
 
 ## What it actually does
 
 On first run the shim resolves a Python invocation in this order:
 
-1. `uvx --from 'recall[mcp,embed-bge,llm-openai]' recall-mcp` — uses
+1. `uvx --from 'typed-recall[mcp,embed-bge,llm-openai]' typed-recall` — uses
    [uv](https://github.com/astral-sh/uv) to run the Python server in an
    ephemeral environment. **Recommended.**
-2. `pipx run --spec 'recall[mcp,embed-bge,llm-openai]' recall-mcp` —
+2. `pipx run --spec 'typed-recall[mcp,embed-bge,llm-openai]' typed-recall` —
    [pipx](https://pipx.pypa.io) fallback.
 3. `python3 -m recall.mcp_server` — assumes you already ran
-   `pip install 'recall[mcp,embed-bge,llm-openai]'`.
+   `pip install 'typed-recall[mcp,embed-bge,llm-openai]'`.
 
 If none of these are available, it prints clear install hints.
 
@@ -91,7 +91,7 @@ Full docs: <https://github.com/yash194/recall>.
 
 - Node.js 16+
 - Python 3.10+
-- One of: `uv` (recommended), `pipx`, or `pip install recall[mcp]` already done
+- One of: `uv` (recommended), `pipx`, or `pip install typed-recall[mcp]` already done
 
 ## License
 

@@ -94,12 +94,12 @@ gh release create vX.Y.Z --title "vX.Y.Z" --notes-from-tag
 ```bash
 # (optional) test on TestPyPI first:
 twine upload --repository testpypi dist/*
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ recall
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ typed-recall
 
 # Real publish:
 twine upload dist/*
 ```
-Wait ~1 minute, then verify: `pip install --upgrade recall`.
+Wait ~1 minute, then verify: `pip install --upgrade typed-recall`.
 
 ### Step 5 — publish to npm
 ```bash
@@ -112,7 +112,7 @@ Verify: `npx -y recall-mcp@latest --help` (will exit 0 after spawning Python).
 ### Step 6 — smoke-test the released artifacts
 ```bash
 # PyPI
-pip install --upgrade 'recall[mcp,embed-bge,llm-openai]'
+pip install --upgrade 'typed-recall[mcp,embed-bge,llm-openai]'
 python -c "from recall import Memory; print(Memory(tenant='smoke').stats())"
 recall me add 'release smoke test memory'
 recall me ask 'release smoke test'

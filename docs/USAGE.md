@@ -29,7 +29,7 @@ The package is `recall`. Required: Python 3.10+. SQLite is stdlib.
 ### 1.1 Quick install (Python lib only)
 
 ```bash
-pip install recall
+pip install typed-recall
 ```
 
 This gives you `recall.Memory`, the deterministic `HashEmbedder` and
@@ -706,7 +706,7 @@ Store `trace_json` next to the answer for compliance review.
 
 ```bash
 # On both machines
-pip install recall
+pip install typed-recall
 
 # Sync ~/.recall/personal.db with your favorite mechanism (Syncthing,
 # Resilio, Dropbox; SQLite is single-writer, so make sure only one

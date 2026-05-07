@@ -22,7 +22,7 @@ moment lasts about 4 seconds — she sees the path graph render.**
 ### Minute 0–5 — install
 
 ```bash
-pip install recall
+pip install typed-recall
 ```
 
 ```python
