@@ -12,11 +12,13 @@
 [![Math: research-backed](https://img.shields.io/badge/math-research--backed-aubergine.svg)](#research-foundations)
 
 ```bash
-# Python library
-pip install typed-recall
+# One-time MCP setup: asks which client (Codex / Claude Code / Cursor /
+# Windsurf), lite vs full, optional API key, then writes the config
+# and pre-warms the cache so MCP starts are instant.
+npx typed-recall install
 
-# MCP server for Claude Code / Codex / Cursor / Windsurf
-claude mcp add recall -- npx -y typed-recall
+# Or use the Python library directly:
+pip install typed-recall
 ```
 
 **Live:** [PyPI](https://pypi.org/project/typed-recall/) · [npm](https://www.npmjs.com/package/typed-recall) · [GitHub releases](https://github.com/yash194/recall/releases)
@@ -243,34 +245,62 @@ pip install typed-recall[dev]                         # everything, for developm
 
 ### As an MCP server (Claude Code / Cursor / Codex / Windsurf / Cline)
 
-The fastest path is via the npm wrapper — one command, no Python setup
-required upfront (the wrapper auto-fetches the Python server via `uvx`):
+#### One-command setup (recommended)
 
 ```bash
+npx typed-recall install
+```
+
+The installer:
+
+1. Asks which client(s) to register with — **Codex**, **Claude Code**,
+   **Cursor**, **Windsurf**, or all of them.
+2. Asks **lite** (~10MB, TF-IDF embedder, mock LLM) vs **full** (~150MB,
+   BGE neural embedder + OpenAI/TokenRouter LLM client).
+3. Optionally collects an OpenAI / TokenRouter API key for real bounded
+   generation.
+4. Installs `uv` (Python tool runner) if missing.
+5. **Pre-warms uv's cache** so subsequent MCP starts are instant — no
+   on-demand download when Codex/Claude Code spawns the server.
+6. Writes the MCP entry to each chosen client's config file
+   (`~/.codex/config.toml`, `~/.cursor/mcp.json`, etc., or runs
+   `claude mcp add recall ...`).
+
+Then restart your client. `recall` MCP is ready, with all 8 tools:
+`add_memory`, `search_memory`, `bounded_answer`, `forget`, `audit`,
+`graph_health`, `consolidate`, `stats`.
+
+Non-interactive (CI / scripts):
+
+```bash
+npx typed-recall install --yes \
+    --client claude-code \
+    --version full \
+    --openai-key sk-...  --openai-base-url https://api.openai.com/v1
+```
+
+#### Manual setup
+
+If you'd rather skip the installer and write the config yourself:
+
+```bash
+# Claude Code
 claude mcp add recall -- npx -y typed-recall
+
+# Codex (~/.codex/config.toml)
+[mcp_servers.recall]
+command = "npx"
+args = ["-y", "typed-recall"]
+
+# Cursor / Windsurf — paste the same JSON-block in their MCP settings
+{ "mcpServers": { "recall": { "command": "npx", "args": ["-y", "typed-recall"] } } }
 ```
 
-Or edit your client's MCP config:
-
-```json
-{
-  "mcpServers": {
-    "recall": {
-      "command": "npx",
-      "args": ["-y", "typed-recall"]
-    }
-  }
-}
-```
-
-If you already have `uv` installed and prefer the Python path directly:
-
-```bash
-claude mcp add recall -- uvx --from typed-recall recall-mcp
-```
-
-The server exposes 8 tools: `add_memory`, `search_memory`, `bounded_answer`,
-`forget`, `audit`, `graph_health`, `consolidate`, `stats`.
+⚠️ **Without the installer**, the *first* MCP startup runs a live Python
+install via uvx. Lite extras (`mcp`) finish in <1s; full extras
+(`mcp,embed-bge,llm-openai`) download ~150MB and can exceed the MCP
+client's startup timeout. Either run the installer first, or override
+extras to lite by setting `RECALL_MCP_EXTRAS=mcp` in the MCP env block.
 
 ### As a personal CLI
 

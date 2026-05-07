@@ -1,8 +1,26 @@
 #!/usr/bin/env node
 /**
- * recall-mcp — npm shim that runs the Python Recall MCP server.
+ * recall-mcp — npm shim for Recall.
  *
- * v0.1.2 — lightweight default extras + auto-install uv.
+ * Two modes:
+ *
+ *   $ npx typed-recall install              ← INTERACTIVE setup wizard
+ *                                              (asks which client, lite/full,
+ *                                              optional API key, then writes
+ *                                              the MCP entry to your config
+ *                                              and pre-warms uv's cache so
+ *                                              MCP starts are instant)
+ *
+ *   $ npx -y typed-recall                   ← MCP SERVER mode (default)
+ *                                              spawned by Codex/Claude Code/
+ *                                              Cursor/Windsurf as the MCP
+ *                                              process; reads JSON-RPC on
+ *                                              stdin, writes responses on
+ *                                              stdout, transparent passthrough
+ *                                              to the Python server.
+ *
+ * v0.2.0 — adds `install` subcommand for one-time, opt-in setup so
+ *          MCP-client startup never has to download Python deps live.
  *
  * The default extras are now just `[mcp]` so first-run install is small
  * (~10MB vs ~150MB with torch/transformers). TF-IDF embedder is the
@@ -26,7 +44,41 @@
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// ---- subcommand dispatch ----
+// `npx typed-recall install [...]`  → run the interactive installer
+// `npx typed-recall help|--help|-h` → print usage
+// anything else (or no args)         → MCP server mode
+
+const sub = process.argv[2];
+
+if (sub === "install" || sub === "init" || sub === "setup") {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const { runInstaller } = await import(join(here, "install.js"));
+  await runInstaller(process.argv.slice(3));
+  process.exit(0);
+}
+
+if (sub === "help" || sub === "--help" || sub === "-h") {
+  process.stdout.write(
+    `\nRecall MCP — typed-edge memory layer for AI agents.\n\n` +
+      `Usage:\n` +
+      `  npx typed-recall install      Interactive one-time setup wizard\n` +
+      `  npx -y typed-recall           Start the MCP server (used by clients)\n` +
+      `  npx typed-recall help         Show this help\n\n` +
+      `For the install command:\n` +
+      `  --yes                  Use defaults (skip prompts)\n` +
+      `  --client <id>          codex | claude-code | cursor | windsurf | all | none\n` +
+      `  --version <id>         lite | full\n` +
+      `  --openai-key <KEY>\n` +
+      `  --openai-base-url <URL>\n` +
+      `  --openai-model <NAME>\n\n` +
+      `Docs: https://github.com/yash194/recall\n\n`,
+  );
+  process.exit(0);
+}
 
 const env = { ...process.env };
 
