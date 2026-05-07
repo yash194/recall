@@ -1,38 +1,102 @@
 name: release
 
+# Triggered on `git push --tags` of a v*.*.* tag.
+#
+# What this does:
+#   - Always: build the wheel + sdist, attach to the GitHub release.
+#   - Best-effort: publish to PyPI via OIDC Trusted Publisher.
+#     This step is `continue-on-error: true` so a missing publisher
+#     config doesn't fail the whole workflow.
+#   - Best-effort: build + push the Docker image to GHCR.
+#
+# To enable PyPI auto-publish:
+#   1. Visit https://pypi.org/manage/project/typed-recall/settings/publishing/
+#   2. Add a new pending publisher:
+#        - Owner: yash194
+#        - Repository name: recall
+#        - Workflow filename: release.yml
+#        - Environment name: pypi  (matches the `environment:` below)
+#   3. Future `git push --tags` will publish automatically.
+
 on:
   push:
     tags:
       - "v*.*.*"
 
 jobs:
-  pypi:
-    name: build and publish to PyPI (Trusted Publisher OIDC)
+  build:
+    name: build wheel + sdist
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write   # for PyPI Trusted Publisher
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
       - name: Build distribution
         run: |
           python -m pip install --upgrade pip build
           python -m build
-      - name: Publish to PyPI (OIDC)
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Verify
+        run: |
+          python -m pip install --quiet twine
+          twine check dist/*
+      - uses: actions/upload-artifact@v4
         with:
-          # No password needed — uses OIDC trusted publisher.
-          # Configure at: pypi.org/manage/project/recall/settings/publishing/
-          skip-existing: true
+          name: dist
+          path: dist/
+
+  pypi:
+    name: publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # OIDC for Trusted Publisher (no API token needed)
+    continue-on-error: true   # don't fail the workflow if Trusted Publisher isn't configured
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true   # idempotent on re-run
+
+  github-release:
+    name: create GitHub release with artifacts
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
 
   docker:
-    name: build and push Docker image (multi-arch)
+    name: build + push Docker image (multi-arch)
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
+    continue-on-error: true   # don't fail the workflow if GHCR isn't reachable
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
@@ -42,8 +106,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract version
-        id: version
+      - id: version
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
       - uses: docker/build-push-action@v5
         with:
@@ -53,19 +116,3 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/recall:latest
             ghcr.io/${{ github.repository_owner }}/recall:${{ steps.version.outputs.version }}
-
-  github-release:
-    name: create GitHub release
-    runs-on: ubuntu-latest
-    needs: [pypi, docker]
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          draft: false
-          prerelease: false
