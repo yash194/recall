@@ -237,11 +237,58 @@ Full derivations in [`docs/MATH.md`](docs/MATH.md).
 ### As a Python library
 
 ```bash
-pip install typed-recall                              # core
-pip install typed-recall[embed-bge,llm-openai]        # neural embedder + OpenAI
-pip install typed-recall[graph,server,mcp]            # full graph math + HTTP + MCP
-pip install typed-recall[dev]                         # everything, for development
+pip install typed-recall          # full install: BGE + OpenAI + MCP + graph math
+recall-setup                       # interactive: API key, MCP client, DB dir, …
 ```
+
+`pip install typed-recall` (v0.2+) bundles **everything you need** in one
+command — neural embedder, real LLM client, MCP server, graph math.
+The first install is ~150MB but you don't need to remember which extras
+to add later.
+
+The post-install `recall-setup` wizard:
+
+- Asks for an OpenAI / TokenRouter API key (so `bounded_answer` returns
+  real LLM output, not stubs).
+- Asks for the base URL + model.
+- Asks where to put the SQLite DB (`~/.recall` by default).
+- Optionally registers the MCP server with **Codex / Claude Code /
+  Cursor / Windsurf** in the same step.
+- Pre-downloads the BGE model so the first `Memory(...)` call is fast.
+- Saves everything to `~/.recall/.env` — auto-loaded on every import,
+  every CLI invocation, every MCP-server launch. No need to `export`
+  anything.
+
+Non-interactive (CI / scripts):
+
+```bash
+pip install typed-recall
+recall-setup --yes \
+    --client claude-code \
+    --openai-key sk-... \
+    --openai-base-url https://api.openai.com/v1 \
+    --openai-model gpt-4o-mini
+```
+
+Optional power-user extras:
+
+```bash
+pip install 'typed-recall[server]'     # +FastAPI HTTP server
+pip install 'typed-recall[gudhi,ot]'   # +persistent homology, optimal transport
+pip install 'typed-recall[dev]'        # everything including pytest, ruff, mypy
+```
+
+#### Lite install (without torch / transformers)
+
+If 150MB is too much (CI runners, edge boxes), skip the heavy deps:
+
+```bash
+pip install --no-deps typed-recall numpy scikit-learn mcp python-dotenv
+```
+
+You'll get the full Python API and CLI but with the TF-IDF embedder
+instead of BGE, and the mock LLM instead of real OpenAI. Works fine for
+prototyping; lower retrieval quality.
 
 ### As an MCP server (Claude Code / Cursor / Codex / Windsurf / Cline)
 

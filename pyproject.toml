@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "typed-recall"
-version = "0.1.0"
-description = "Memory layer for AI agents — typed-edge graph, bounded hallucination, audit-grade, surgically forgettable. Local SQLite + MCP server."
+version = "0.2.0"
+description = "Memory layer for AI agents — typed-edge graph, bounded hallucination, audit-grade, surgically forgettable. Local SQLite + MCP server. Full install includes BGE neural embedder and OpenAI client out of the box."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -29,26 +29,38 @@ classifiers = [
 ]
 
 dependencies = [
+    # --- core (always required) ---
     "numpy>=1.24",
-    "scikit-learn>=1.3",  # used by TfidfEmbedder + structural-support check
+    "scikit-learn>=1.3",          # TfidfEmbedder + structural-support check
     # SQLite is stdlib.
-    # Heavy optional deps (torch, sentence-transformers, gudhi, etc.) are extras.
+    # --- heavy deps now bundled in the default install (v0.2 promise) ---
+    "sentence-transformers>=2.2", # BGE neural embedder; pulls torch + transformers
+    "openai>=1.0",                # real LLM client (OpenAI / TokenRouter / OpenAI-compatible)
+    "mcp>=1.0",                   # MCP server (`recall-mcp`)
+    "scipy>=1.10",                # spectral, sheaf, BMRS math
+    "networkx>=3.0",              # path / Steiner-tree algorithms
+    "python-dotenv>=1.0",         # auto-load ~/.recall/.env on import
 ]
 
 [project.optional-dependencies]
-embed-bge = ["sentence-transformers>=2.2", "torch>=2.0"]
-llm-openai = ["openai>=1.0"]
-llm-anthropic = ["anthropic>=0.20"]
-mcp = ["mcp>=1.0"]
-graph = ["scipy>=1.10", "networkx>=3.0", "POT>=0.9", "gudhi>=3.8"]
+# Extra graph backends (power-user)
+gudhi = ["gudhi>=3.8"]            # persistent homology
+ot    = ["POT>=0.9"]              # optimal transport (Wasserstein)
+# HTTP server
 server = ["fastapi>=0.100", "uvicorn>=0.23", "pydantic>=2.0"]
+# Other LLM providers
+llm-anthropic = ["anthropic>=0.20"]
+# Dev / test / build
 test = ["pytest>=7.0", "pytest-cov", "hypothesis>=6.0"]
-dev = ["recall[test,mcp,graph,server,llm-openai]", "ruff", "mypy"]
+dev  = ["typed-recall[test,gudhi,ot,server]", "ruff", "mypy", "build", "twine"]
+# Convenience meta-extra: everything except dev tooling
+all  = ["typed-recall[gudhi,ot,server]"]
 
 [project.scripts]
 recall = "recall.cli:main"
 recall-me = "recall.personal:main"
 recall-mcp = "recall.mcp_server:main"
+recall-setup = "recall.setup_wizard:main"
 
 [project.urls]
 Homepage = "https://github.com/yash194/recall"

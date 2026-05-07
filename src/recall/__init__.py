@@ -11,6 +11,34 @@ Public API:
     mem.forget(node_id, reason="outdated")
 """
 
+# v0.2: auto-load `~/.recall/.env` so OPENAI_API_KEY / RECALL_DB_DIR /
+# etc. set by `recall-setup` are picked up by the library, CLI, and MCP
+# server without requiring the user to manually export them.
+def _autoload_env() -> None:
+    import os
+    from pathlib import Path
+    env_path = Path.home() / ".recall" / ".env"
+    if not env_path.exists():
+        return
+    try:
+        from dotenv import load_dotenv  # type: ignore
+        load_dotenv(env_path, override=False)
+    except ImportError:
+        # Manual fallback — don't fail import just because dotenv is missing
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            k, v = k.strip(), v.strip()
+            if v and v[0] in "\"'" and v[-1] == v[0]:
+                v = v[1:-1]
+            os.environ.setdefault(k, v)
+
+
+_autoload_env()
+del _autoload_env
+
 from recall.api import HallucinationBlocked, Memory
 from recall.consolidate.scheduler import ConsolidationStats, Consolidator
 from recall.embeddings import (
@@ -40,7 +68,7 @@ from recall.types import (
     WriteResult,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "Memory",
