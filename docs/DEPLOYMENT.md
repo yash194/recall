@@ -7,7 +7,7 @@
 
 ## Three deployment modes
 
-### Mode 1 — Embedded (`pip install recall`)
+### Mode 1 — Embedded (`pip install typed-recall`)
 
 **For**: notebook research, single-user agent, on-device, air-gapped.
 
@@ -17,7 +17,7 @@
 - **Latency**: observe p50 30ms / p99 120ms; recall p50 40ms / p99 200ms; bounded_generate p50 600ms / p99 2s (LLM-bound).
 - **Cost**: zero infra. ~1 KB/node disk. LLM calls are user's own bill.
 - **Scale ceiling**: ~500K nodes per tenant before brute-force cosine in `topk_cosine` needs replacement with hnswlib/FAISS.
-- **Install**: `pip install recall` (or `pip install recall[embed-bge,llm-openai]`).
+- **Install**: `pip install typed-recall` (or `pip install typed-recall[embed-bge,llm-openai]`).
 
 ### Mode 2 — Self-hosted server (Docker)
 
@@ -210,7 +210,7 @@ auto-bump off free tier.
 
 ### Embedded — ship anytime once:
 - [x] Tests >70% pass on Python 3.10–3.12 (currently 144/144)
-- [x] `pip install recall[embed-bge,llm-openai]` clean install on macOS+Linux
+- [x] `pip install typed-recall[embed-bge,llm-openai]` clean install on macOS+Linux
 - [x] README quickstart works in <5 lines
 - [ ] No required env vars
 

@@ -215,7 +215,7 @@ any MCP-aware client. Recall exposes 8 tools the LLM can call directly.
 ```bash
 pip install "recall[mcp]"
 # Or with uvx (preferred — no local install):
-uvx --from recall recall-mcp --help
+uvx --from typed-recall recall-mcp --help
 ```
 
 ### 3.2 What tools the LLM gets
@@ -241,7 +241,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`
   "mcpServers": {
     "recall": {
       "command": "uvx",
-      "args": ["--from", "recall", "recall-mcp"],
+      "args": ["--from", "typed-recall", "recall-mcp"],
       "env": {
         "RECALL_DB_DIR": "/Users/you/.recall"
       }
@@ -274,7 +274,7 @@ Cursor reads MCP config from `~/.cursor/mcp.json`:
   "mcpServers": {
     "recall": {
       "command": "uvx",
-      "args": ["--from", "recall", "recall-mcp"]
+      "args": ["--from", "typed-recall", "recall-mcp"]
     }
   }
 }
@@ -291,7 +291,7 @@ Cline (VS Code extension) — settings: `cline.mcpServers`:
   "cline.mcpServers": {
     "recall": {
       "command": "uvx",
-      "args": ["--from", "recall", "recall-mcp"]
+      "args": ["--from", "typed-recall", "recall-mcp"]
     }
   }
 }
@@ -307,7 +307,7 @@ Continue (VS Code / JetBrains): edit `~/.continue/config.json`:
     {
       "name": "recall",
       "command": "uvx",
-      "args": ["--from", "recall", "recall-mcp"]
+      "args": ["--from", "typed-recall", "recall-mcp"]
     }
   ]
 }
@@ -323,7 +323,7 @@ Zed: edit `~/.config/zed/settings.json` or use the in-editor MCP UI:
     "servers": {
       "recall": {
         "command": "uvx",
-        "args": ["--from", "recall", "recall-mcp"]
+        "args": ["--from", "typed-recall", "recall-mcp"]
       }
     }
   }
@@ -338,13 +338,13 @@ recall-mcp`.
 ### 3.9 Codex CLI
 
 ```bash
-claude mcp add recall -- uvx --from recall recall-mcp
+claude mcp add recall -- uvx --from typed-recall recall-mcp
 ```
 
 ### 3.10 Test the MCP server stand-alone
 
 ```bash
-RECALL_DB_DIR=~/.recall uvx --from recall recall-mcp
+RECALL_DB_DIR=~/.recall uvx --from typed-recall recall-mcp
 # It will sit on stdin/stdout speaking JSON-RPC. Send a list_tools request
 # to verify it's alive. Most users won't do this — they just configure
 # their MCP client and restart it.
@@ -363,7 +363,7 @@ same SQLite schema.
 
 ## 4. `recall` CLI
 
-For one-off scripted use. Installed via `pip install recall` as the
+For one-off scripted use. Installed via `pip install typed-recall` as the
 `recall` command.
 
 ### 4.1 Subcommands
@@ -791,7 +791,7 @@ pip install "recall[mcp]"
 
 1. Check the config file path is correct (macOS:
    `~/Library/Application Support/Claude/claude_desktop_config.json`).
-2. Run `uvx --from recall recall-mcp --help` in a terminal — it should
+2. Run `uvx --from typed-recall recall-mcp --help` in a terminal — it should
    print the help. If it errors, install with
    `pip install "recall[mcp]"`.
 3. Fully quit Claude Desktop (cmd+Q) and restart. A reload from the

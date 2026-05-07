@@ -4,15 +4,22 @@
 
 **The memory layer for AI agents — typed-edge graph, bounded hallucination, surgically forgettable.**
 
+[![PyPI version](https://img.shields.io/pypi/v/typed-recall.svg?label=PyPI&color=blue)](https://pypi.org/project/typed-recall/)
+[![npm version](https://img.shields.io/npm/v/typed-recall.svg?label=npm&color=red)](https://www.npmjs.com/package/typed-recall)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests: 154 passing](https://img.shields.io/badge/tests-154%20passing-brightgreen.svg)](#tests)
-[![Version: v0.6](https://img.shields.io/badge/version-v0.6-aubergine.svg)](CHANGELOG.md)
 [![Math: research-backed](https://img.shields.io/badge/math-research--backed-aubergine.svg)](#research-foundations)
 
 ```bash
+# Python library
 pip install typed-recall
+
+# MCP server for Claude Code / Codex / Cursor / Windsurf
+claude mcp add recall -- npx -y typed-recall
 ```
+
+**Live:** [PyPI](https://pypi.org/project/typed-recall/) · [npm](https://www.npmjs.com/package/typed-recall) · [GitHub releases](https://github.com/yash194/recall/releases)
 
 </div>
 
@@ -234,10 +241,13 @@ pip install typed-recall[graph,server,mcp]            # full graph math + HTTP +
 pip install typed-recall[dev]                         # everything, for development
 ```
 
-### As an MCP server (Claude Desktop / Cursor / Cline / Codex / Continue)
+### As an MCP server (Claude Code / Cursor / Codex / Windsurf / Cline)
+
+The fastest path is via the npm wrapper — one command, no Python setup
+required upfront (the wrapper auto-fetches the Python server via `uvx`):
 
 ```bash
-claude mcp add recall -- uvx --from recall recall-mcp
+claude mcp add recall -- npx -y typed-recall
 ```
 
 Or edit your client's MCP config:
@@ -246,11 +256,17 @@ Or edit your client's MCP config:
 {
   "mcpServers": {
     "recall": {
-      "command": "uvx",
-      "args": ["--from", "recall", "recall-mcp"]
+      "command": "npx",
+      "args": ["-y", "typed-recall"]
     }
   }
 }
+```
+
+If you already have `uv` installed and prefer the Python path directly:
+
+```bash
+claude mcp add recall -- uvx --from typed-recall recall-mcp
 ```
 
 The server exposes 8 tools: `add_memory`, `search_memory`, `bounded_answer`,
@@ -259,7 +275,7 @@ The server exposes 8 tools: `add_memory`, `search_memory`, `bounded_answer`,
 ### As a personal CLI
 
 ```bash
-pipx install recall
+pipx install typed-recall
 recall me add "decided to migrate from Postgres LISTEN/NOTIFY to Redis Streams"
 recall me ask "what queue tech are we using?"
 recall me health         # spectral / topology / curvature diagnostics
@@ -343,8 +359,8 @@ Full architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 | Channel | Who it's for | Install |
 |---|---|---|
-| **Python library** | App builders | `pip install recall` |
-| **MCP server** | Claude Desktop / Cursor / Codex / Cline / Continue users | `uvx --from recall recall-mcp` |
+| **Python library** | App builders | `pip install typed-recall` |
+| **MCP server** | Claude Desktop / Cursor / Codex / Cline / Continue users | `uvx --from typed-recall recall-mcp` |
 | **Personal CLI** | Personal knowledge graph users | `pipx install recall` |
 | **Self-hosted server** | Teams in their own VPC | `docker compose up` |
 | **Browser extension** (scaffold) | ChatGPT / Claude / Gemini consumers | `extensions/browser/` |

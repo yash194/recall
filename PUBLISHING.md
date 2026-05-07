@@ -7,7 +7,7 @@
 
 | Artifact | Location | Distributed via |
 |---|---|---|
-| Python package | `pyproject.toml` + `src/recall/` | PyPI (`pip install recall`) |
+| Python package | `pyproject.toml` + `src/recall/` | PyPI (`pip install typed-recall`) |
 | npm wrapper | `npm/package.json` + `npm/bin/recall-mcp.js` | npm (`npm install -g recall-mcp`) |
 | Source repo | `.` (everything) | GitHub (`yash194/recall`) |
 

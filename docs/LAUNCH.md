@@ -11,7 +11,7 @@
 ### T-21 → T-15 (3 weeks out) — repo readiness
 - [ ] All files in `Repo health checklist` (below) green
 - [ ] CI passing on Python 3.10/3.11/3.12 matrix
-- [ ] `pip install recall` works on a fresh Mac/Linux venv
+- [ ] `pip install typed-recall` works on a fresh Mac/Linux venv
 - [ ] Quickstart in README runs end-to-end in <60s
 - [ ] Demo GIF recorded (split-screen Mem0-vs-Recall, ≤8MB, in repo)
 - [ ] 90s screencast for Twitter (with captions)
@@ -42,7 +42,7 @@
 - [ ] Kong MCP Registry (enterprise discovery)
 
 ### T-3 → T-1 — final dry-run
-- [ ] Smoke test on a fresh box: `pip install recall` + run quickstart
+- [ ] Smoke test on a fresh box: `pip install typed-recall` + run quickstart
 - [ ] Run all benchmarks; numbers in README match
 - [ ] Demo GIF confirmed playing in README on github.com
 - [ ] Twitter thread drafted, ready to schedule
@@ -113,7 +113,7 @@
 > - Conformal Risk Control bound on hallucination rate (non-vacuous, ~0.18 vs PAC-Bayes vacuous 1.0)
 > - Math doc derives Γ retrieval primitive as antisymmetric Fisher-Rao pull-back (Hauberg ICML 2025 framework)
 >
-> Apache-2.0, no waitlist, `pip install recall`. Cloud tier comes at T+90 — OSS will never be crippleware. Commitment in `GOVERNANCE.md`.
+> Apache-2.0, no waitlist, `pip install typed-recall`. Cloud tier comes at T+90 — OSS will never be crippleware. Commitment in `GOVERNANCE.md`.
 >
 > Demo: recall.dev · Repo: github.com/[org]/recall · Math: recall.dev/docs/math
 
@@ -125,7 +125,7 @@
 >
 > Today: Recall — a typed-edge memory substrate that makes agent memory debuggable.
 >
-> Apache-2.0. `pip install recall`.
+> Apache-2.0. `pip install typed-recall`.
 > [DEMO GIF — split-screen Mem0 vs Recall]
 >
 > **2/** Why typed edges?
@@ -156,7 +156,7 @@
 > Full derivation in docs/math.md.
 >
 > **6/** Distribution day-one:
-> - Python lib (`pip install recall`)
+> - Python lib (`pip install typed-recall`)
 > - MCP server (Claude Desktop / Cursor / Cline / Continue / Zed)
 > - Personal CLI (`recall me`)
 > - FastAPI server

@@ -1,6 +1,6 @@
 # Publishing Recall to PyPI — Complete Guide
 
-> Step-by-step instructions to get `pip install recall` working for the world.
+> Step-by-step instructions to get `pip install typed-recall` working for the world.
 > Total time: ~30–45 minutes.
 > Cost: $0.
 
@@ -30,7 +30,7 @@
 
 After following this guide:
 
-- `pip install recall` works on any machine in the world
+- `pip install typed-recall` works on any machine in the world
 - Tagging `v0.4.1` in git auto-publishes a new version (no manual upload)
 - No long-lived API tokens stored anywhere (uses OIDC)
 - Pre-1.0 release line: `0.4.0`, `0.4.1`, `0.5.0`, ... → eventually `1.0.0`
@@ -351,7 +351,7 @@ View at:
 https://pypi.org/project/recall/0.4.0/
 ```
 
-The package is now public. **Anyone in the world can run `pip install recall`.**
+The package is now public. **Anyone in the world can run `pip install typed-recall`.**
 
 ### 6.3 Verify
 
@@ -574,7 +574,7 @@ If you want to dry-run a release without burning a version number:
 
 ## Yanking a bad release
 
-If you publish a broken version (rare but happens), you can **yank** it. Yanking doesn't delete the file — `pip install recall==0.4.5` still works for users with a pinned version — but new installs and `pip install recall` (unpinned) will skip it.
+If you publish a broken version (rare but happens), you can **yank** it. Yanking doesn't delete the file — `pip install recall==0.4.5` still works for users with a pinned version — but new installs and `pip install typed-recall` (unpinned) will skip it.
 
 1. Go to https://pypi.org/manage/project/recall/release/0.4.5/
 2. Click **Options → Yank**
@@ -606,7 +606,7 @@ The token format is wrong. Username must be **literally** `__token__` (two leadi
 
 Make sure `readme = "README.md"` (not `readme = {file = "README.md"}`). Check `twine check dist/*` for warnings.
 
-### `pip install recall` installs an old version
+### `pip install typed-recall` installs an old version
 
 PyPI caches aggressively. Force-refresh:
 

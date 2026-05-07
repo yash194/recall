@@ -43,7 +43,7 @@ Three lines. Her existing FastAPI endpoint compiles. Tests pass.
 
 She runs the bot against a fresh customer transcript. The default
 `HashEmbedder` works but is dumb — she sees that. README points her to
-`pip install recall[embed-bge]` and `Memory(embedder=BGEEmbedder(...))`.
+`pip install typed-recall[embed-bge]` and `Memory(embedder=BGEEmbedder(...))`.
 Now retrieval is real.
 
 She tries the demo question: "what queue tech are we using?" 30 messages
@@ -94,10 +94,10 @@ tool you use."
 ### Minute 0–3 — install
 
 ```bash
-claude mcp add recall -- uvx --from recall recall-mcp
+claude mcp add recall -- uvx --from typed-recall recall-mcp
 ```
 
-That's it. Or in Cursor settings → MCP → add `uvx --from recall recall-mcp`.
+That's it. Or in Cursor settings → MCP → add `uvx --from typed-recall recall-mcp`.
 
 ### Minute 3–10 — first test
 
@@ -330,7 +330,7 @@ edges + bounded generation + audit trail.
 
 | Persona | Discovery channel | Install path | Time-to-felt-improvement |
 |---|---|---|---|
-| Maya (indie dev) | HN, r/LocalLLaMA, Letta Discord | `pip install recall` | ~1 day |
+| Maya (indie dev) | HN, r/LocalLLaMA, Letta Discord | `pip install typed-recall` | ~1 day |
 | Jordan (AI-tool user) | r/LocalLLaMA, Cursor forum, Twitter | `claude mcp add recall` | ~10 minutes |
 | Hiroshi (PKM user) | r/Obsidian, dev.to, Hacker News | `pipx install recall` + `recall me ingest` | ~1 hour |
 | Alex (enterprise) | Cold inbound, conference, vendor eval | `docker compose up` | ~2 weeks (security review) |
