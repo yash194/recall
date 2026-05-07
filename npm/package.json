@@ -1,6 +1,6 @@
 {
   "name": "typed-recall",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Recall — typed-edge memory MCP server for AI agents (Claude Code / Codex / Cursor / Windsurf). Wrapper that runs the Python MCP server via uvx.",
   "keywords": [
     "mcp",
