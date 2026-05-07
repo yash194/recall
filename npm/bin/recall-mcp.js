@@ -2,15 +2,18 @@
 /**
  * recall-mcp — npm shim that runs the Python Recall MCP server.
  *
- * v0.1.1 — auto-installs `uv` on first run if it's not on PATH so
- * `npx -y typed-recall` works without any prior Python setup.
+ * v0.1.2 — lightweight default extras + auto-install uv.
+ *
+ * The default extras are now just `[mcp]` so first-run install is small
+ * (~10MB vs ~150MB with torch/transformers). TF-IDF embedder is the
+ * default and works without any heavy ML deps. Set
+ * `RECALL_MCP_EXTRAS=mcp,embed-bge,llm-openai` if you want neural BGE
+ * embeddings + OpenAI client compiled in.
  *
  * Resolution order:
  *   1. RECALL_MCP_CMD env override (JSON-array string).
- *   2. `uvx --from 'typed-recall[mcp,embed-bge,llm-openai]' recall-mcp`
- *      (uv-managed, no global install needed).
- *   3. `pipx run --spec 'typed-recall[mcp,embed-bge,llm-openai]' recall-mcp`
- *      (pipx fallback).
+ *   2. `uvx --from 'typed-recall[<extras>]' recall-mcp` (uv-managed).
+ *   3. `pipx run --spec 'typed-recall[<extras>]' recall-mcp` (pipx fallback).
  *   4. If neither uvx nor pipx is on PATH, auto-install `uv` via the
  *      official Astral installer, then retry with uvx.
  *   5. Last resort: `python3 -m recall.mcp_server` (assumes the user
@@ -26,6 +29,13 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const env = { ...process.env };
+
+// Lightweight default — pulls only `mcp>=1.0` plus the core recall lib.
+// First-run install is ~10MB (vs ~150MB with embed-bge). Users who want
+// BGE neural embeddings or the OpenAI client baked in can override:
+//   RECALL_MCP_EXTRAS=mcp,embed-bge,llm-openai
+const EXTRAS = env.RECALL_MCP_EXTRAS || "mcp";
+const PKG_SPEC = `typed-recall[${EXTRAS}]`;
 
 function which(cmd) {
   const r = spawnSync(process.platform === "win32" ? "where" : "which", [cmd], {
@@ -110,14 +120,14 @@ function resolveCommand() {
   if (uvx) {
     return {
       cmd: uvx,
-      args: ["--from", "typed-recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
+      args: ["--from", PKG_SPEC, "recall-mcp"],
       via: "uvx",
     };
   }
   if (which("pipx")) {
     return {
       cmd: "pipx",
-      args: ["run", "--spec", "typed-recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
+      args: ["run", "--spec", PKG_SPEC, "recall-mcp"],
       via: "pipx",
     };
   }
@@ -129,7 +139,7 @@ function resolveCommand() {
     env.PATH = `${localBin}:${env.PATH || ""}`;
     return {
       cmd: uvx,
-      args: ["--from", "typed-recall[mcp,embed-bge,llm-openai]", "recall-mcp"],
+      args: ["--from", PKG_SPEC, "recall-mcp"],
       via: "uvx (auto-installed)",
     };
   }
@@ -155,7 +165,7 @@ child.on("error", (err) => {
       `[recall-mcp] ERROR: \`${cmd}\` not found. Install one of:\n` +
         `  - uv (recommended):  curl -LsSf https://astral.sh/uv/install.sh | sh\n` +
         `  - pipx:              python3 -m pip install --user pipx && pipx ensurepath\n` +
-        `  - or: pip install 'typed-recall[mcp,embed-bge,llm-openai]'\n`,
+        `  - or: pip install '${PKG_SPEC}'\n`,
     );
   } else {
     process.stderr.write(`[recall-mcp] spawn error: ${err.message}\n`);
