@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.2 — 2026-05-10
+
+First release published via PyPI Trusted Publisher (OIDC) after registering
+the publisher claim on pypi.org. Includes the v0.2.1 `override=True` fix
+below. v0.2.1 was tagged but never reached PyPI due to a missing publisher
+record at the time of release; this republishes the same code under 0.2.2
+so `pip install -U typed-recall` resolves cleanly.
+
 ## v0.2.1 — 2026-05-10
 
 ### Fixed
