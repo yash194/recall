@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "typed-recall"
-version = "0.2.0"
+version = "0.2.1"
 description = "Memory layer for AI agents — typed-edge graph, bounded hallucination, audit-grade, surgically forgettable. Local SQLite + MCP server. Full install includes BGE neural embedder and OpenAI client out of the box."
 readme = "README.md"
 requires-python = ">=3.10"

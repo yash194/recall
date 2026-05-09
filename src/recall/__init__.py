@@ -22,9 +22,15 @@ def _autoload_env() -> None:
         return
     try:
         from dotenv import load_dotenv  # type: ignore
-        load_dotenv(env_path, override=False)
+        # override=True: ~/.recall/.env is the explicit Recall config written
+        # by `recall-setup`, so it must win over host-injected env (e.g.
+        # Codex's mcp_servers.recall.env block). Without this, a stale value
+        # like RECALL_OPENAI_MODEL="gpt-4o-mini" injected by a host config
+        # silently shadows the user's updated `.env` value.
+        load_dotenv(env_path, override=True)
     except ImportError:
-        # Manual fallback — don't fail import just because dotenv is missing
+        # Manual fallback — don't fail import just because dotenv is missing.
+        # Mirrors override=True semantics: `.env` wins.
         for line in env_path.read_text().splitlines():
             line = line.strip()
             if not line or line.startswith("#") or "=" not in line:
@@ -33,7 +39,7 @@ def _autoload_env() -> None:
             k, v = k.strip(), v.strip()
             if v and v[0] in "\"'" and v[-1] == v[0]:
                 v = v[1:-1]
-            os.environ.setdefault(k, v)
+            os.environ[k] = v
 
 
 _autoload_env()
@@ -68,7 +74,7 @@ from recall.types import (
     WriteResult,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 __all__ = [
     "Memory",

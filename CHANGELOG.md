@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.1 — 2026-05-10
+
+### Fixed
+- **`~/.recall/.env` autoload now overrides host-injected env vars**
+  (`override=True`). Previously, when an MCP host (e.g. Codex's
+  `mcp_servers.recall.env` block) injected `RECALL_OPENAI_MODEL` or
+  `OPENAI_API_KEY` before subprocess start, dotenv silently refused to
+  overwrite — making `.env` edits and `recall-setup` re-runs appear to
+  have no effect. The `.env` file written by `recall-setup` is now the
+  authoritative source of truth, as users expect.
+- Mirrored the same precedence in the no-`python-dotenv` fallback path.
+
+### Why this matters
+The 0.2.0 default of `override=False` caused silent config drift: a
+TokenRouter / OpenRouter user editing `RECALL_OPENAI_MODEL` to add a
+required vendor prefix (e.g. `openai/gpt-4o-mini`) would see their
+change ignored if the host had already set the bare name. 0.2.1 makes
+the user's `.env` win, matching the principle that `recall-setup`
+writes the canonical Recall config.
+
 ## v0.1.0 — 2026-05-08 (first PyPI / npm release)
 
 First public release. Codename "v0.7" internally — versioned 0.1.0 on
